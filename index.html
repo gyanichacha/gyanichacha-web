@@ -545,6 +545,79 @@
             color: var(--white);
             border-color: var(--primary-color);
         }
+
+        /* =========================================
+           6. STUDENT DASHBOARD
+           ========================================= */
+        .dashboard-section {
+            display: none;
+            min-height: 100vh;
+            padding: 100px 5% 50px 5%;
+            position: relative;
+            z-index: 10;
+        }
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+            border: 2px solid var(--primary-color);
+        }
+        .hero-profile h2 {
+            color: var(--text-dark);
+            font-size: 28px;
+            font-weight: 900;
+        }
+        .hero-profile p {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        .points-card {
+            background: linear-gradient(135deg, #FFBE0B 0%, #FF9F00 100%);
+            padding: 15px 30px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 8px 15px rgba(255, 190, 11, 0.3);
+        }
+        .points-card h3 { font-size: 24px; font-weight: 900; margin-bottom: 5px; }
+        .points-card span { font-size: 14px; font-weight: 700; }
+        
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .mission-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--secondary-color);
+            transition: transform 0.2s;
+        }
+        .mission-card:hover { transform: translateY(-5px); }
+        .mission-card h3 { color: var(--text-dark); margin-bottom: 10px; }
+        .mission-card p { color: var(--text-light); margin-bottom: 15px; font-size: 14px; font-weight: 600; }
+        .play-btn {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Nunito', sans-serif;
+            transition: opacity 0.2s;
+        }
+        .play-btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -679,24 +752,60 @@
         </div>
     </div>
 
+    <!-- 6. STUDENT DASHBOARD SECTION -->
+    <section class="dashboard-section" id="studentDashboard">
+        <div class="dashboard-header">
+            <div class="hero-profile">
+                <h2 id="dashName">Hero Name</h2>
+                <p id="dashGrade">Grade X - Role</p>
+            </div>
+            <div class="points-card">
+                <h3>⭐ <span id="dashPoints">0</span></h3>
+                <span>Total Points</span>
+            </div>
+        </div>
+
+        <h2 style="color: var(--text-dark); margin-bottom: 20px; font-weight: 800;">🎮 Today's Missions</h2>
+        <div class="missions-grid">
+            <div class="mission-card">
+                <h3>1. Math Puzzle</h3>
+                <p>Solve 5 basic puzzles to earn 50 stars!</p>
+                <button class="play-btn">Play Now</button>
+            </div>
+            <div class="mission-card" style="border-left-color: var(--accent-color);">
+                <h3>2. Science Video</h3>
+                <p>Watch the animated journey of a water drop.</p>
+                <button class="play-btn" style="background: var(--accent-color);">Watch & Earn</button>
+            </div>
+            <div class="mission-card" style="border-left-color: var(--primary-color);">
+                <h3>3. Daily Quiz</h3>
+                <p>Test your knowledge and level up your hero.</p>
+                <button class="play-btn" style="background: var(--primary-color);">Start Quiz</button>
+            </div>
+        </div>
+    </section>
+
     <script>
         // Modal & Navigation Logic
         const modal = document.getElementById('authModal');
         const landingSection = document.getElementById('landingSection');
         const gamifiedSection = document.getElementById('gamifiedSection');
         const studySection = document.getElementById('studySection');
+        const studentDashboard = document.getElementById('studentDashboard');
         const navbar = document.getElementById('navbar');
 
         function goHome() {
             landingSection.style.display = 'flex';
             gamifiedSection.style.display = 'none';
             studySection.style.display = 'none';
+            studentDashboard.style.display = 'none';
             navbar.style.display = 'flex';
         }
 
         function showStudyMaterial() {
             landingSection.style.display = 'none';
             gamifiedSection.style.display = 'none';
+            studentDashboard.style.display = 'none';
             studySection.style.display = 'block';
             navbar.style.display = 'flex';
         }
@@ -749,7 +858,26 @@
             btn.disabled = true;
             
             setTimeout(() => {
-                alert(`Welcome to the Game, ${name}! \nLoading Grade ${grade} Quests & Rewards... \n\n(Backend Database will connect here soon!)`);
+                // Hide setup, show dashboard
+                gamifiedSection.style.display = 'none';
+                studentDashboard.style.display = 'block';
+                navbar.style.display = 'flex'; // Show navbar so they can navigate
+                
+                // Update Dashboard Data
+                document.getElementById('dashName').innerText = "Welcome, " + name + "!";
+                const gradeText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
+                document.getElementById('dashGrade').innerText = gradeText;
+                
+                // Points animation
+                let points = 0;
+                const pointsEl = document.getElementById('dashPoints');
+                const interval = setInterval(() => {
+                    points += 10;
+                    pointsEl.innerText = points;
+                    if(points >= 150) clearInterval(interval); // Give 150 starting bonus points!
+                }, 50);
+
+                // Reset button for future use
                 btn.innerHTML = 'Start Playing <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
                 btn.style.opacity = '1';
                 btn.disabled = false;
