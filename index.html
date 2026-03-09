@@ -1123,6 +1123,8 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'gyanichacha';
         
         let currentUser = null;
+        let isOfflineMode = false;
+        let offlinePoints = 250;
 
         // Auto Login System
         signInAnonymously(auth).catch((error) => console.error("Auth Error:", error));
@@ -1205,7 +1207,15 @@
             }
         }
 
-        // Saving Data to Firebase Cloud
+        function setupDashboardView(name, grade) {
+            hideAll();
+            studentDashboard.style.display = 'block';
+            navbar.style.display = 'flex'; 
+            document.getElementById('dashName').innerText = "Hello, " + name + "!";
+            document.getElementById('dashGrade').innerText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
+        }
+
+        // Saving Data to Firebase Cloud (WITH OFFLINE FALLBACK)
         window.startAdventure = async function() {
             const btn = document.getElementById('startBtn');
             const name = document.getElementById('heroName').value.trim();
@@ -1217,33 +1227,32 @@
                 return;
             }
 
-            if (!currentUser) {
-                alert("Cloud connection pending... Please wait 1 second and click again.");
-                return;
-            }
-
             errorMsg.style.display = 'none';
             btn.innerHTML = 'Zooming to Cloud... 🚀';
             btn.style.opacity = '0.9';
             btn.disabled = true;
             
             try {
+                // FAIL-SAFE: Agar Firebase 4 second tak jawab na de, toh bacha Offline khelega!
+                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
+                
+                if (!currentUser) throw new Error('not_logged_in');
+
                 const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-                const docSnap = await getDoc(userRef);
+                
+                // Promise.race jo pehle ho jaye (Database ya Timeout)
+                const docSnap = await Promise.race([getDoc(userRef), timeoutPromise]);
                 
                 if (docSnap.exists()) {
-                    await updateDoc(userRef, { heroName: name, grade: grade });
+                    await Promise.race([updateDoc(userRef, { heroName: name, grade: grade }), timeoutPromise]);
                 } else {
-                    await setDoc(userRef, { heroName: name, grade: grade, points: 250 });
+                    await Promise.race([setDoc(userRef, { heroName: name, grade: grade, points: 250 }), timeoutPromise]);
                 }
 
-                hideAll();
-                studentDashboard.style.display = 'block';
-                navbar.style.display = 'flex'; 
+                isOfflineMode = false;
+                setupDashboardView(name, grade);
                 
-                document.getElementById('dashName').innerText = "Hello, " + name + "!";
-                document.getElementById('dashGrade').innerText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
-                
+                // Live points listener
                 onSnapshot(userRef, (liveData) => {
                     if (liveData.exists()) {
                         document.getElementById('dashPoints').innerText = liveData.data().points;
@@ -1251,8 +1260,14 @@
                 }, (error) => console.error("Error reading points:", error));
 
             } catch (error) {
-                console.error("Firebase Error:", error);
-                alert("Oops! Internet error. Please check your connection.");
+                console.warn("Firebase is slow! Switching to Offline Mode.", error);
+                
+                // OFFLINE MODE JADOO: Bachha kabhi hang screen pe nahi fasega!
+                isOfflineMode = true;
+                offlinePoints = 250;
+                setupDashboardView(name + " (Offline)", grade);
+                document.getElementById('dashPoints').innerText = offlinePoints;
+                
             } finally {
                 btn.innerHTML = 'Blast Off! 🚀';
                 btn.style.opacity = '1';
@@ -1481,17 +1496,23 @@
             document.getElementById('gameOverModal').style.display = 'flex';
         }
 
+        // Claim Points (Offline ya Online)
         window.claimPointsAndQuit = async function() {
-            if (currentUser && gameScore > 0) {
-                const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-                try {
-                    const docSnap = await getDoc(userRef);
-                    if (docSnap.exists()) {
-                        const currentPoints = docSnap.data().points;
-                        await updateDoc(userRef, { points: currentPoints + gameScore });
+            if (gameScore > 0) {
+                if (isOfflineMode) {
+                    offlinePoints += gameScore;
+                    document.getElementById('dashPoints').innerText = offlinePoints;
+                } else if (currentUser) {
+                    const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
+                    try {
+                        const docSnap = await getDoc(userRef);
+                        if (docSnap.exists()) {
+                            const currentPoints = docSnap.data().points;
+                            await updateDoc(userRef, { points: currentPoints + gameScore });
+                        }
+                    } catch (error) {
+                        console.error("Error adding game points:", error);
                     }
-                } catch (error) {
-                    console.error("Error adding game points:", error);
                 }
             }
             quitGame();
