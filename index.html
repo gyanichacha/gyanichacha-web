@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gyanichacha - Learning App</title>
+    <title>Gyanichacha - Premium Learning App</title>
     <!-- Professional yet kid-friendly Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -11,8 +11,9 @@
             --primary-color: #6C5CE7;
             --secondary-color: #00CEC9;
             --accent-color: #FD79A8;
-            --bg-gradient-1: #A8EDEA;
-            --bg-gradient-2: #FED6E3;
+            --warning-color: #FDCB6E;
+            --bg-gradient-1: #E0C3FC;
+            --bg-gradient-2: #8EC5FC;
             --text-dark: #2D3436;
             --text-light: #636E72;
             --white: #FFFFFF;
@@ -27,6 +28,7 @@
         body {
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
@@ -35,33 +37,35 @@
         /* Animated Background Elements */
         .shape {
             position: fixed;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(5px);
-            animation: float 6s infinite ease-in-out alternate;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(8px);
+            animation: float 8s infinite ease-in-out alternate;
             z-index: 0;
         }
 
         .shape-circle {
             border-radius: 50%;
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             top: -50px;
             left: -100px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
         }
 
         .shape-square {
-            border-radius: 30px;
-            width: 200px;
-            height: 200px;
+            border-radius: 40px;
+            width: 250px;
+            height: 250px;
             bottom: 5%;
             right: 2%;
             transform: rotate(45deg);
-            animation-delay: 1s;
+            animation-delay: 2s;
+            background: linear-gradient(135deg, rgba(253, 121, 168, 0.2), rgba(108, 92, 231, 0.2));
         }
 
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-30px) rotate(10deg); }
+            100% { transform: translateY(-40px) rotate(15deg); }
         }
 
         /* =========================================
@@ -71,14 +75,15 @@
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 20px 5%;
+            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
             z-index: 100;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 2px solid rgba(255,255,255,0.5);
         }
 
         .logo {
@@ -89,41 +94,49 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            text-shadow: 2px 2px 0px rgba(108, 92, 231, 0.2);
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 35px;
             align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-dark);
-            font-weight: 700;
+            font-weight: 800;
             font-size: 16px;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            padding: 5px 10px;
+            border-radius: 10px;
         }
 
         .nav-links a:hover {
             color: var(--primary-color);
+            background: rgba(108, 92, 231, 0.1);
         }
 
         .login-btn-nav {
             background: var(--white);
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
-            padding: 10px 24px;
-            border-radius: 20px;
+            padding: 10px 28px;
+            border-radius: 25px;
             font-weight: 800;
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: 0 4px 0 rgba(108, 92, 231, 0.2);
         }
 
         .login-btn-nav:hover {
             background: var(--primary-color);
             color: var(--white);
             transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(108, 92, 231, 0.4);
         }
 
         .landing-section {
@@ -139,10 +152,16 @@
         .hero-text {
             flex: 1;
             max-width: 600px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border: 2px solid rgba(255,255,255,0.8);
         }
 
         .hero-text h1 {
-            font-size: 56px;
+            font-size: 52px;
             color: var(--text-dark);
             line-height: 1.2;
             margin-bottom: 20px;
@@ -151,14 +170,15 @@
 
         .hero-text h1 span {
             color: var(--primary-color);
+            text-shadow: 2px 2px 0px rgba(108, 92, 231, 0.2);
         }
 
         .hero-text p {
-            font-size: 20px;
+            font-size: 18px;
             color: var(--text-light);
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             line-height: 1.6;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .main-cta {
@@ -172,15 +192,15 @@
             font-family: 'Nunito', sans-serif;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            box-shadow: 0 8px 0 #4B40A5, 0 15px 25px rgba(108, 92, 231, 0.4);
             display: inline-flex;
             align-items: center;
             gap: 10px;
         }
 
         .main-cta:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px rgba(108, 92, 231, 0.4);
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #4B40A5, 0 10px 15px rgba(108, 92, 231, 0.4);
         }
 
         .hero-image {
@@ -188,8 +208,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 150px;
+            font-size: 180px;
             animation: float 4s infinite ease-in-out alternate;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
         }
 
         /* =========================================
@@ -201,7 +222,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
             display: none;
             justify-content: center;
@@ -219,86 +240,107 @@
         .auth-modal {
             background: var(--white);
             padding: 40px;
-            border-radius: 24px;
+            border-radius: 30px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 0 0 10px rgba(255,255,255,0.2);
             position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
         }
 
         .modal-overlay.active .auth-modal {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .close-btn {
             position: absolute;
             top: 20px;
-            right: 20px;
-            background: none;
+            right: 25px;
+            background: rgba(0,0,0,0.05);
             border: none;
-            font-size: 24px;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
             cursor: pointer;
             color: var(--text-light);
-            transition: color 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .close-btn:hover {
-            color: var(--text-dark);
+            background: var(--accent-color);
+            color: var(--white);
+            transform: rotate(90deg);
         }
 
         .auth-modal h2 {
-            font-size: 28px;
+            font-size: 30px;
             color: var(--text-dark);
             margin-bottom: 10px;
-            font-weight: 800;
+            font-weight: 900;
         }
 
         .auth-modal p {
             color: var(--text-light);
-            margin-bottom: 25px;
-            font-weight: 600;
+            margin-bottom: 30px;
+            font-weight: 700;
         }
 
         .input-field {
             width: 100%;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 16px;
             border: 2px solid #DFE6E9;
             margin-bottom: 15px;
             font-family: 'Nunito', sans-serif;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            background: #F8F9FA;
+            color: var(--text-dark);
         }
 
         .input-field:focus {
             border-color: var(--primary-color);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
         }
 
         .auth-submit-btn {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background: var(--text-dark);
             color: var(--white);
             border: none;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 18px;
             font-weight: 800;
             font-family: 'Nunito', sans-serif;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
             margin-top: 10px;
+            box-shadow: 0 6px 0 #1e2527;
         }
 
         .auth-submit-btn:hover {
             background: var(--primary-color);
+            box-shadow: 0 6px 0 #4B40A5;
+            transform: translateY(-2px);
+        }
+        
+        .auth-submit-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 #4B40A5;
         }
 
         /* =========================================
-           3. GAMIFIED DASHBOARD (Original Code)
+           3. GAMIFIED REGISTRATION (HERO SETUP + GAME)
            ========================================= */
         .gamified-section {
             display: none;
@@ -307,47 +349,48 @@
             justify-content: center;
             position: relative;
             z-index: 10;
+            padding: 20px;
         }
 
         .login-card {
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 255, 255, 0.4);
             text-align: center;
-            width: 90%;
-            max-width: 420px;
-            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 480px;
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--white);
         }
 
         .mascot-wrapper {
-            width: 90px;
-            height: 90px;
-            background: var(--primary-color);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--warning-color), #FF9F00);
             border-radius: 50%;
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            font-size: 45px;
-            margin-top: -85px;
-            border: 6px solid var(--white);
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
-            margin-bottom: 15px;
+            font-size: 50px;
+            margin-top: -90px;
+            border: 8px solid var(--white);
+            box-shadow: 0 15px 25px rgba(255, 159, 0, 0.3);
+            margin-bottom: 20px;
         }
 
         .login-card h1 {
             color: var(--text-dark);
-            font-size: 32px;
-            font-weight: 800;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.5px;
+            font-size: 36px;
+            font-weight: 900;
+            margin: 0 0 5px 0;
         }
 
         .login-card p.subtitle {
-            color: var(--text-light);
+            color: var(--primary-color);
             font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 30px;
+            font-weight: 800;
+            margin-bottom: 25px;
         }
 
         .form-group {
@@ -357,8 +400,8 @@
 
         .form-group label {
             display: block;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 800;
             color: var(--text-dark);
             margin-bottom: 8px;
             padding-left: 5px;
@@ -366,14 +409,13 @@
 
         .game-input {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             border-radius: 16px;
             border: 2px solid #DFE6E9;
             font-size: 16px;
             font-family: 'Nunito', sans-serif;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-dark);
-            box-sizing: border-box;
             background-color: #F8F9FA;
             transition: all 0.3s ease;
             outline: none;
@@ -385,43 +427,106 @@
             box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
         }
 
-        .game-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C5CE7%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px top 50%;
-            background-size: 14px auto;
+        /* --- MINI GAME STYLES --- */
+        .mini-game-box {
+            background: #F8F9FA;
+            border: 3px dashed var(--secondary-color);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .mini-game-box h3 {
+            font-size: 18px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .mini-game-box p {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .puzzle-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .puzzle-btn {
+            background: var(--white);
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .puzzle-btn:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .puzzle-success {
+            display: none;
+            color: #00b894;
+            font-weight: 900;
+            font-size: 18px;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .game-btn {
             background: linear-gradient(135deg, var(--primary-color) 0%, #897BFF 100%);
             color: var(--white);
             border: none;
-            padding: 18px 30px;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 800;
+            padding: 20px 30px;
+            border-radius: 18px;
+            font-size: 20px;
+            font-weight: 900;
             font-family: 'Nunito', sans-serif;
             cursor: pointer;
             width: 100%;
-            margin-top: 15px;
             transition: all 0.2s;
-            box-shadow: 0 6px 0 #4B40A5, 0 15px 20px rgba(108, 92, 231, 0.4);
+            box-shadow: 0 8px 0 #4B40A5;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
         }
 
-        .game-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0px 0 #4B40A5, 0 5px 10px rgba(108, 92, 231, 0.4);
+        .game-btn:active:not(:disabled) {
+            transform: translateY(8px);
+            box-shadow: 0 0px 0 #4B40A5;
+        }
+
+        .game-btn:disabled {
+            background: #DFE6E9;
+            box-shadow: 0 8px 0 #B2BEC3;
+            color: #636E72;
+            cursor: not-allowed;
+            transform: translateY(0);
         }
 
         .error-message {
             color: #D63031;
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 800;
             margin-top: -10px;
             margin-bottom: 15px;
             display: none;
@@ -429,20 +534,8 @@
             padding-left: 5px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .landing-section {
-                flex-direction: column;
-                text-align: center;
-                padding-top: 150px;
-            }
-            .hero-text h1 { font-size: 40px; }
-            .nav-links { display: none; } /* Simplified for mobile */
-            .hero-image { display: none; }
-        }
-
         /* =========================================
-           5. STUDY MATERIAL SECTION
+           5. STUDY MATERIAL SECTION (MAGICAL LIBRARY)
            ========================================= */
         .study-section {
             display: none;
@@ -453,7 +546,7 @@
         }
         .study-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
         .book-grid {
             display: grid;
@@ -464,86 +557,92 @@
         }
         .book-card {
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            transition: all 0.3s;
             position: relative;
             backdrop-filter: blur(10px);
-            border: 2px solid transparent;
+            border: 2px solid var(--white);
         }
         .book-card:hover {
             transform: translateY(-10px);
             border-color: var(--primary-color);
-            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.15);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
         }
         .book-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
+            font-size: 55px;
+            margin-bottom: 20px;
             background: #F8F9FA;
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 16px;
+            border-radius: 25px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
         }
         .book-badge {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 25px;
+            right: 25px;
             background: var(--secondary-color);
             color: var(--white);
-            padding: 5px 12px;
+            padding: 6px 15px;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 800;
+            font-size: 13px;
+            font-weight: 900;
         }
         .book-card h3 {
             color: var(--text-dark);
-            margin-bottom: 10px;
-            font-size: 20px;
-            font-weight: 800;
+            margin-bottom: 12px;
+            font-size: 22px;
+            font-weight: 900;
         }
         .book-card p {
             color: var(--text-light);
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-weight: 700;
         }
         .download-btn {
-            background: #F8F9FA;
+            background: var(--white);
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-weight: 800;
+            padding: 12px 20px;
+            border-radius: 15px;
+            font-weight: 900;
             width: 100%;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Nunito', sans-serif;
             font-size: 16px;
         }
         .download-btn:hover {
             background: var(--primary-color);
             color: var(--white);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
         }
+        
+        /* Filter Buttons for Library */
         .filter-btn {
             background: var(--white);
             border: 2px solid #DFE6E9;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 700;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 800;
             color: var(--text-light);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Nunito', sans-serif;
+            font-size: 16px;
         }
         .filter-btn:hover, .filter-btn.active {
             background: var(--primary-color);
             color: var(--white);
             border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
         }
 
         /* =========================================
@@ -552,59 +651,66 @@
         .dashboard-section {
             display: none;
             min-height: 100vh;
-            padding: 100px 5% 50px 5%;
+            padding: 110px 5% 50px 5%;
             position: relative;
             z-index: 10;
         }
         .dashboard-header {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            backdrop-filter: blur(10px);
-            margin-bottom: 30px;
-            border: 2px solid var(--primary-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            backdrop-filter: blur(15px);
+            margin-bottom: 40px;
+            border: 3px solid var(--primary-color);
         }
         .hero-profile h2 {
             color: var(--text-dark);
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
+            margin-bottom: 5px;
         }
         .hero-profile p {
             color: var(--primary-color);
-            font-weight: 700;
+            font-weight: 800;
             font-size: 18px;
         }
         .points-card {
             background: linear-gradient(135deg, #FFBE0B 0%, #FF9F00 100%);
-            padding: 15px 30px;
-            border-radius: 15px;
+            padding: 20px 40px;
+            border-radius: 20px;
             color: white;
             text-align: center;
-            box-shadow: 0 8px 15px rgba(255, 190, 11, 0.3);
+            box-shadow: 0 10px 20px rgba(255, 190, 11, 0.3);
+            border: 2px solid rgba(255,255,255,0.3);
         }
-        .points-card h3 { font-size: 24px; font-weight: 900; margin-bottom: 5px; }
-        .points-card span { font-size: 14px; font-weight: 700; }
+        .points-card h3 { font-size: 32px; font-weight: 900; margin-bottom: 5px; }
+        .points-card span { font-size: 15px; font-weight: 800; opacity: 0.9; }
         
         .missions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
         }
         .mission-card {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--secondary-color);
-            transition: transform 0.2s;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-left: 8px solid var(--secondary-color);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        .mission-card:hover { transform: translateY(-5px); }
-        .mission-card h3 { color: var(--text-dark); margin-bottom: 10px; }
-        .mission-card p { color: var(--text-light); margin-bottom: 15px; font-size: 14px; font-weight: 600; }
+        .mission-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .mission-card h3 { color: var(--text-dark); margin-bottom: 12px; font-size: 22px; font-weight: 900;}
+        .mission-card p { color: var(--text-light); margin-bottom: 20px; font-size: 15px; font-weight: 700; line-height: 1.5; }
         .play-btn {
             background: var(--secondary-color);
             color: white;
@@ -618,6 +724,46 @@
             transition: opacity 0.2s;
         }
         .play-btn:hover { opacity: 0.8; }
+
+        /* =========================================
+           7. FOOTER SECTION (Contact Details)
+           ========================================= */
+        .site-footer {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 25px 5%;
+            text-align: center;
+            border-top: 2px solid #DFE6E9;
+            position: relative;
+            z-index: 10;
+        }
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-dark);
+            font-weight: 800;
+            font-size: 18px;
+            text-decoration: none;
+            transition: color 0.3s, transform 0.2s;
+            background: #F8F9FA;
+            padding: 10px 20px;
+            border-radius: 15px;
+            border: 2px solid #DFE6E9;
+        }
+        .contact-item:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -629,10 +775,10 @@
     <nav class="navbar" id="navbar">
         <div class="logo" onclick="goHome()">🚀 Gyanichacha</div>
         <div class="nav-links">
-            <a href="#" onclick="showStudyMaterial()">Study Material</a>
+            <a href="#" onclick="showStudyMaterial()">📚 Library</a>
             <a href="#">Classes 1-8</a>
-            <a href="#">Parents</a>
-            <button class="login-btn-nav" onclick="openModal()">Login / Register</button>
+            <a href="#">Parents Area</a>
+            <button class="login-btn-nav" onclick="openModal()">Login / Join</button>
         </div>
     </nav>
 
@@ -642,7 +788,7 @@
             <h1>Make learning a <br><span>Grand Adventure!</span></h1>
             <p>India's most loved learning app for Kids. Interactive games, coding quests, and animated lessons for Classes 1 to 8.</p>
             <button class="main-cta" onclick="openModal()">
-                Start Learning Free
+                Start Playing Free
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
         </div>
@@ -651,23 +797,86 @@
         </div>
     </section>
 
-    <!-- 5. STUDY MATERIAL SECTION -->
+    <!-- 3. REGISTRATION / LOGIN MODAL -->
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <button class="close-btn" onclick="closeModal()">✖</button>
+            <h2>Parents Login 👨‍👩‍👧</h2>
+            <p>Enter details to unlock the magical world!</p>
+            
+            <input type="email" id="authEmail" class="input-field" placeholder="Parent's Email or Mobile No." required>
+            <input type="password" id="authPass" class="input-field" placeholder="Secret Password" required>
+            
+            <button class="auth-submit-btn" onclick="processLogin()">Secure Unlock 🔓</button>
+            <p style="text-align: center; margin-top: 25px; font-size: 15px; color: var(--text-light);">New hero? <a href="#" style="color: var(--primary-color); font-weight: 900; text-decoration: none;">Create Free Account</a></p>
+        </div>
+    </div>
+
+    <!-- 4. GAMIFIED CLASS SELECTION + MINI GAME (HERO SETUP) -->
+    <div class="gamified-section" id="gamifiedSection">
+        <div class="login-card">
+            <div class="mascot-wrapper">🦁</div>
+            
+            <h1>Hero Setup</h1>
+            <p class="subtitle">Design your avatar and prove your skills!</p>
+            
+            <div class="form-group">
+                <label for="heroName">What is your name, Hero?</label>
+                <input type="text" id="heroName" class="game-input" placeholder="Type your full name here..." autocomplete="off" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="heroGrade">Select your Mission Level</label>
+                <select id="heroGrade" class="game-input" style="appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C5CE7%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 14px auto;" required>
+                    <option value="" disabled selected>Tap to choose your Class</option>
+                    <option value="1">Class 1 - Novice Explorer</option>
+                    <option value="2">Class 2 - Junior Scholar</option>
+                    <option value="3">Class 3 - Rising Star</option>
+                    <option value="4">Class 4 - Quest Master</option>
+                    <option value="5">Class 5 - Logic Knight</option>
+                    <option value="6">Class 6 - Science Wizard</option>
+                    <option value="7">Class 7 - Tech Guru</option>
+                    <option value="8">Class 8 - Grandmaster</option>
+                </select>
+            </div>
+
+            <div class="error-message" id="errorMsg">Oops! Don't leave blanks!</div>
+
+            <!-- REGISTRATION MINI GAME -->
+            <div class="mini-game-box" id="miniGameBox">
+                <h3>Solve to Unlock Rocket 🚀</h3>
+                <p>Power up your spaceship by solving this:</p>
+                <h2 style="font-size: 28px; color: var(--primary-color); margin-bottom: 15px;">5 + 4 = ?</h2>
+                <div class="puzzle-options" id="puzzleOptions">
+                    <button class="puzzle-btn" onclick="checkPuzzle(8, this)">8</button>
+                    <button class="puzzle-btn" onclick="checkPuzzle(9, this)">9</button>
+                    <button class="puzzle-btn" onclick="checkPuzzle(10, this)">10</button>
+                </div>
+                <div class="puzzle-success" id="puzzleSuccess">✨ Power 100% Loaded! ✨</div>
+            </div>
+            
+            <!-- Button is DISABLED initially -->
+            <button onclick="startAdventure()" id="startBtn" class="game-btn" disabled>
+                Locked 🔒 Solve Puzzle First!
+            </button>
+        </div>
+    </div>
+
+    <!-- 5. STUDY MATERIAL SECTION (LIBRARY) -->
     <section class="study-section" id="studySection">
         <div class="study-header">
-            <h1 style="color: var(--text-dark); font-size: 40px; font-weight: 900;">📚 Magical Library</h1>
-            <p style="color: var(--text-light); font-size: 18px; font-weight: 600;">Download Books and PDF Notes for all classes!</p>
+            <h1 style="color: var(--text-dark); font-size: 46px; font-weight: 900;">📚 The Magical Library</h1>
+            <p style="color: var(--text-light); font-size: 20px; font-weight: 700; margin-top: 10px;">Download Books, Worksheets, and PDF Notes!</p>
         </div>
         
-        <!-- Filter Buttons -->
-        <div style="text-align: center; margin-bottom: 30px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
-            <button class="filter-btn active">All Classes</button>
+        <div style="text-align: center; margin-bottom: 40px; display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;">
+            <button class="filter-btn active">All Books</button>
             <button class="filter-btn">Class 1-2</button>
             <button class="filter-btn">Class 3-5</button>
             <button class="filter-btn">Class 6-8</button>
         </div>
 
         <div class="book-grid">
-            <!-- Book 1 -->
             <div class="book-card">
                 <div class="book-icon">📗</div>
                 <span class="book-badge">Class 1</span>
@@ -675,7 +884,6 @@
                 <p>Fun with numbers, counting, and basic math logic for beginners.</p>
                 <button class="download-btn">Read PDF ⬇️</button>
             </div>
-            <!-- Book 2 -->
             <div class="book-card">
                 <div class="book-icon">📘</div>
                 <span class="book-badge">Class 4</span>
@@ -683,7 +891,6 @@
                 <p>Discover the wonders of the universe, plants, and animals.</p>
                 <button class="download-btn">Read PDF ⬇️</button>
             </div>
-            <!-- Book 3 -->
             <div class="book-card">
                 <div class="book-icon">📙</div>
                 <span class="book-badge">Class 8</span>
@@ -691,66 +898,15 @@
                 <p>Learn logic, basic programming, and start building games.</p>
                 <button class="download-btn">Read PDF ⬇️</button>
             </div>
-            <!-- Upload Box (Admin feel) -->
-            <div class="book-card" style="border: 3px dashed var(--primary-color); background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center;">
-                <div class="book-icon" style="background: transparent; color: var(--primary-color); font-size: 50px; margin-bottom: 0;">➕</div>
-                <h3 style="color: var(--primary-color); margin-top: 10px;">Upload New PDF</h3>
-                <p>Admin only: Add more books to the Gyanichacha library</p>
+            
+            <!-- Admin Upload Box -->
+            <div class="book-card" style="border: 3px dashed var(--primary-color); background: rgba(255,255,255,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center;" onclick="alert('Admin Feature: Later we will connect this to Firebase Storage to upload real PDF files from your computer!')">
+                <div class="book-icon" style="background: transparent; color: var(--primary-color); font-size: 50px; margin-bottom: 0; box-shadow: none;">➕</div>
+                <h3 style="color: var(--primary-color); margin-top: 10px;">Upload New Book</h3>
+                <p>Admin only: Add new PDFs to the Gyanichacha library database.</p>
             </div>
         </div>
     </section>
-
-    <!-- 3. REGISTRATION / LOGIN MODAL -->
-    <div class="modal-overlay" id="authModal">
-        <div class="auth-modal">
-            <button class="close-btn" onclick="closeModal()">✖</button>
-            <h2>Welcome Back!</h2>
-            <p>Enter your details to continue</p>
-            
-            <input type="email" id="authEmail" class="input-field" placeholder="Parent's Email or Mobile No." required>
-            <input type="password" id="authPass" class="input-field" placeholder="Password" required>
-            
-            <button class="auth-submit-btn" onclick="processLogin()">Secure Login</button>
-            <p style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-light);">New here? <a href="#" style="color: var(--primary-color); font-weight: 800; text-decoration: none;">Create Free Account</a></p>
-        </div>
-    </div>
-
-    <!-- 4. GAMIFIED CLASS SELECTION (Original Setup) -->
-    <div class="gamified-section" id="gamifiedSection">
-        <div class="login-card">
-            <div class="mascot-wrapper">🚀</div>
-            
-            <h1>Hero Setup</h1>
-            <p class="subtitle">Choose your avatar and mission level!</p>
-            
-            <div class="form-group">
-                <label for="heroName">Hero ID (Child's Name)</label>
-                <input type="text" id="heroName" class="game-input" placeholder="Enter your full name" autocomplete="off" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="heroGrade">Select Grade</label>
-                <select id="heroGrade" class="game-input game-select" required>
-                    <option value="" disabled selected>Choose your current grade</option>
-                    <option value="1">Grade 1 - Novice Explorer</option>
-                    <option value="2">Grade 2 - Junior Scholar</option>
-                    <option value="3">Grade 3 - Rising Star</option>
-                    <option value="4">Grade 4 - Quest Master</option>
-                    <option value="5">Grade 5 - Logic Knight</option>
-                    <option value="6">Grade 6 - Science Wizard</option>
-                    <option value="7">Grade 7 - Tech Guru</option>
-                    <option value="8">Grade 8 - Grandmaster</option>
-                </select>
-            </div>
-
-            <div class="error-message" id="errorMsg">Please fill in all the details!</div>
-            
-            <button onclick="startAdventure()" id="startBtn" class="game-btn">
-                Start Playing 
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-        </div>
-    </div>
 
     <!-- 6. STUDENT DASHBOARD SECTION -->
     <section class="dashboard-section" id="studentDashboard">
@@ -761,21 +917,21 @@
             </div>
             <div class="points-card">
                 <h3>⭐ <span id="dashPoints">0</span></h3>
-                <span>Total Points</span>
+                <span>Total XP Points</span>
             </div>
         </div>
 
-        <h2 style="color: var(--text-dark); margin-bottom: 20px; font-weight: 800;">🎮 Today's Missions</h2>
+        <h2 style="color: var(--text-dark); margin-bottom: 25px; font-size: 28px; font-weight: 900;">🎮 Today's Quests</h2>
         <div class="missions-grid">
             <div class="mission-card">
-                <h3>1. Math Puzzle</h3>
-                <p>Solve 5 basic puzzles to earn 50 stars!</p>
-                <button class="play-btn" onclick="earnPoints(50)">Play Now (+50)</button>
+                <h3>1. Number Ninja</h3>
+                <p>Slice the correct numbers to solve the puzzle and earn stars!</p>
+                <button class="play-btn" onclick="earnPoints(50)">Play Mission (+50)</button>
             </div>
             <div class="mission-card" style="border-left-color: var(--accent-color);">
-                <h3>2. Science Video</h3>
-                <p>Watch the animated journey of a water drop.</p>
-                <button class="play-btn" style="background: var(--accent-color);" onclick="earnPoints(30)">Watch & Earn (+30)</button>
+                <h3>2. Science Journey</h3>
+                <p>Watch the animated journey of a water drop to the clouds.</p>
+                <button class="play-btn" style="background: var(--accent-color);" onclick="earnPoints(30)">Watch Video (+30)</button>
             </div>
             <div class="mission-card" style="border-left-color: var(--primary-color);">
                 <h3>3. Daily Quiz</h3>
@@ -785,24 +941,25 @@
         </div>
     </section>
 
+    <!-- 7. FOOTER (Contact Section) -->
+    <footer class="site-footer" id="siteFooter">
+        <h3 style="color: var(--primary-color); font-weight: 900; margin-bottom: 5px; font-size: 22px;">Gyanichacha</h3>
+        <p style="color: var(--text-light); font-weight: 600;">India's most loved learning app for Kids.</p>
+        
+        <div class="contact-info">
+            <a href="mailto:ceo@gyanichacha.com" class="contact-item">
+                📧 ceo@gyanichacha.com
+            </a>
+            <a href="tel:+917054632047" class="contact-item">
+                📞 +91 7054632047
+            </a>
+        </div>
+    </footer>
+
     <script type="module">
         // 1. Firebase ki Machine Import Kar rahe hain
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // 2. Aapka Firebase Secret Code
-        const firebaseConfig = {
-          apiKey: "AIzaSyAkDQGXBE8v6bvwesCms1GK5hYUXNTvq4s",
-          authDomain: "gyanichacha-5bf95.firebaseapp.com",
-          projectId: "gyanichacha-5bf95",
-          storageBucket: "gyanichacha-5bf95.firebasestorage.app",
-          messagingSenderId: "564005525839",
-          appId: "1:564005525839:web:7fa9e90a3428cb1bb64d3a",
-          measurementId: "G-HTVKVSXG2X"
-        };
-
-        // 3. Database Connection Start
+        // Firebase Connection Start
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -810,19 +967,20 @@
         
         let currentUser = null;
 
-        // Bacha bina pareshani ke login rahe, uske liye background connection
+        // Auto Login System
         signInAnonymously(auth).catch((error) => console.error("Auth Error:", error));
         onAuthStateChanged(auth, (user) => {
             if (user) currentUser = user;
         });
 
-        // HTML elements pakad rahe hain
+        // HTML elements
         const modal = document.getElementById('authModal');
         const landingSection = document.getElementById('landingSection');
         const gamifiedSection = document.getElementById('gamifiedSection');
         const studySection = document.getElementById('studySection');
         const studentDashboard = document.getElementById('studentDashboard');
         const navbar = document.getElementById('navbar');
+        const siteFooter = document.getElementById('siteFooter'); // Footer ko pakda
 
         window.goHome = function() {
             landingSection.style.display = 'flex';
@@ -830,6 +988,7 @@
             studySection.style.display = 'none';
             studentDashboard.style.display = 'none';
             navbar.style.display = 'flex';
+            siteFooter.style.display = 'block'; // Footer dikhao
         }
 
         window.showStudyMaterial = function() {
@@ -837,6 +996,35 @@
             gamifiedSection.style.display = 'none';
             studentDashboard.style.display = 'none';
             studySection.style.display = 'block';
+            navbar.style.display = 'flex';
+            siteFooter.style.display = 'block'; // Footer dikhao
+        }
+
+        window.openModal = function() {
+            modal.classList.add('active');
+        }
+
+        window.closeModal = function() {
+            modal.classList.remove('active');
+        }
+
+        window.processLogin = function() {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPass').value;
+
+            if(email === "" || pass === "") {
+                alert("Please enter Email/Phone and Password to login!");
+                return;
+            }
+
+            closeModal();
+            landingSection.style.display = 'none';
+            navbar.style.display = 'none'; 
+            siteFooter.style.display = 'none'; // Game setup ke time footer chupao
+            gamifiedSection.style.display = 'flex';
+        }
+
+        // 4. Bacha jab Play dabayega, Data Cloud me Save hoga!
             navbar.style.display = 'flex';
         }
 
@@ -863,7 +1051,7 @@
             gamifiedSection.style.display = 'flex';
         }
 
-        // 4. Bacha jab Play dabayega, Data Cloud me Save hoga!
+        // Saving Data to Firebase Cloud
         window.startAdventure = async function() {
             const btn = document.getElementById('startBtn');
             const name = document.getElementById('heroName').value.trim();
@@ -876,37 +1064,35 @@
             }
 
             if (!currentUser) {
-                alert("Cloud se connect ho rahe hain... Bas 1 second rukiye aur dobara click kijiye!");
+                alert("Cloud connection pending... Please wait 1 second and click again.");
                 return;
             }
 
             errorMsg.style.display = 'none';
-            btn.innerHTML = 'Connecting to Cloud... ⏳';
+            btn.innerHTML = 'Zooming to Cloud... 🚀';
             btn.style.opacity = '0.9';
             btn.disabled = true;
             
             try {
-                // Firebase Database File ka address
+                // Firebase Database Path
                 const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
                 const docSnap = await getDoc(userRef);
                 
                 if (docSnap.exists()) {
-                    // Agar purana bacha hai toh update karo
                     await updateDoc(userRef, { heroName: name, grade: grade });
                 } else {
-                    // Naya bacha hai toh 150 points gift mein do
-                    await setDoc(userRef, { heroName: name, grade: grade, points: 150 });
+                    await setDoc(userRef, { heroName: name, grade: grade, points: 250 }); // Added bonus for puzzle
                 }
 
-                // Dashboard kholo
+                // Show Dashboard
                 gamifiedSection.style.display = 'none';
                 studentDashboard.style.display = 'block';
                 navbar.style.display = 'flex'; 
                 
-                document.getElementById('dashName').innerText = "Welcome, " + name + "!";
+                document.getElementById('dashName').innerText = "Hello, " + name + "!";
                 document.getElementById('dashGrade').innerText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
                 
-                // 5. MAGIC! Real-time Live Points Updater
+                // Real-time Database Listener for Points
                 onSnapshot(userRef, (liveData) => {
                     if (liveData.exists()) {
                         document.getElementById('dashPoints').innerText = liveData.data().points;
@@ -917,13 +1103,13 @@
                 console.error("Firebase Error:", error);
                 alert("Oops! Internet error. Please check your connection.");
             } finally {
-                btn.innerHTML = 'Start Playing';
+                btn.innerHTML = 'Blast Off! 🚀';
                 btn.style.opacity = '1';
                 btn.disabled = false;
             }
         }
 
-        // 6. Game Khelne Par Asli Points Add Karna
+        // Adding Points to Database upon playing games
         window.earnPoints = async function(pointsToAdd) {
             if (!currentUser) return;
             
@@ -932,9 +1118,8 @@
                 const docSnap = await getDoc(userRef);
                 if (docSnap.exists()) {
                     const currentPoints = docSnap.data().points;
-                    // Database me points add karo
                     await updateDoc(userRef, { points: currentPoints + pointsToAdd });
-                    alert("🎉 Awesome! You earned " + pointsToAdd + " points!");
+                    alert("🎉 Super Hero! You just earned " + pointsToAdd + " XP!");
                 }
             } catch (error) {
                 console.error("Error adding points:", error);
