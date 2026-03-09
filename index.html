@@ -764,6 +764,116 @@
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
         }
+
+        /* =========================================
+           8. GAME ARENA (NEW GAMIFICATION UI)
+           ========================================= */
+        .game-arena-section {
+            display: none;
+            min-height: 100vh;
+            padding: 100px 5% 50px 5%;
+            position: relative;
+            z-index: 20;
+            background: linear-gradient(135deg, #1e272e 0%, #2f3640 100%);
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .game-canvas-area {
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'), rgba(0,0,0,0.3);
+            height: 60vh;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .game-target {
+            position: absolute;
+            background: radial-gradient(circle, var(--accent-color), #d63031);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            user-select: none;
+            transition: transform 0.1s;
+        }
+        .game-target:active {
+            transform: scale(1.2);
+        }
+        .game-info-text {
+            color: white;
+            font-size: 28px;
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            text-align: center;
+            width: 100%;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 5;
+        }
+        .cricket-commentary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-weight: 800;
+            font-size: 18px;
+            text-align: center;
+            min-height: 60px;
+            border: 3px solid var(--warning-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .game-action-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 20px;
+            font-size: 24px;
+            font-weight: 900;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 6px 0 #019074;
+            transition: all 0.2s;
+            font-family: 'Nunito', sans-serif;
+        }
+        .game-action-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0px 0 #019074;
+        }
+        /* End Game Modal */
+        .game-over-modal {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            color: white;
+        }
+        .game-over-modal h2 { font-size: 40px; color: var(--warning-color); margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -908,7 +1018,7 @@
         </div>
     </section>
 
-    <!-- 6. STUDENT DASHBOARD SECTION -->
+    <!-- 6. STUDENT DASHBOARD SECTION (UPDATED FOR GAMES) -->
     <section class="dashboard-section" id="studentDashboard">
         <div class="dashboard-header">
             <div class="hero-profile">
@@ -921,23 +1031,58 @@
             </div>
         </div>
 
-        <h2 style="color: var(--text-dark); margin-bottom: 25px; font-size: 28px; font-weight: 900;">🎮 Today's Quests</h2>
+        <h2 style="color: var(--text-dark); margin-bottom: 25px; font-size: 28px; font-weight: 900;">🎮 Class 1 Game Zone</h2>
         <div class="missions-grid">
             <div class="mission-card">
-                <h3>1. Number Ninja</h3>
-                <p>Slice the correct numbers to solve the puzzle and earn stars!</p>
-                <button class="play-btn" onclick="earnPoints(50)">Play Mission (+50)</button>
+                <h3>1. Alphabet Shooter 🅰️</h3>
+                <p>Aasmaan se girti hui A-Z ABCD ko bandook (click) se goli maaro aur points kamao!</p>
+                <button class="play-btn" onclick="openGame('alphabet')">Play Mission 🎯</button>
             </div>
             <div class="mission-card" style="border-left-color: var(--accent-color);">
-                <h3>2. Science Journey</h3>
-                <p>Watch the animated journey of a water drop to the clouds.</p>
-                <button class="play-btn" style="background: var(--accent-color);" onclick="earnPoints(30)">Watch Video (+30)</button>
+                <h3>2. Table Shooter 🔢</h3>
+                <p>2 se 10 tak ke Pahaade (Tables) aayenge. Sahi answer wale gubbare ko goli maaro!</p>
+                <button class="play-btn" style="background: var(--accent-color);" onclick="openGame('table')">Shoot Tables 🎯</button>
             </div>
             <div class="mission-card" style="border-left-color: var(--primary-color);">
-                <h3>3. Daily Quiz</h3>
-                <p>Test your knowledge and level up your hero.</p>
-                <button class="play-btn" style="background: var(--primary-color);" onclick="earnPoints(100)">Start Quiz (+100)</button>
+                <h3>3. Gully Cricket 🏏</h3>
+                <p>Khel-khel mein Maths aur Memory! Shot maaro, Runs banao aur live Commentary suno.</p>
+                <button class="play-btn" style="background: var(--primary-color);" onclick="openGame('cricket')">Play Cricket 🏏</button>
             </div>
+        </div>
+    </section>
+
+    <!-- 8. GAME ARENA (NEW SECTION FOR PLAYING) -->
+    <section class="game-arena-section" id="gameArena">
+        <div class="game-header">
+            <button onclick="quitGame()" style="background:transparent; border:none; color:white; font-size:18px; font-weight:bold; cursor:pointer;">⬅️ Back to Dashboard</button>
+            <h2 id="gameTitle" style="margin:0;">Game Title</h2>
+            <div style="font-size: 20px; font-weight:bold;">Score: <span id="gameScore">0</span></div>
+        </div>
+        
+        <!-- Cricket Status Bar (Only for Cricket) -->
+        <div id="cricketStatusBar" style="display:none; justify-content:space-around; background:rgba(255,255,255,0.9); padding:10px; border-radius:15px; margin-bottom:15px; font-weight:bold; color:black; font-size:20px;">
+            <div>Runs: <span id="cricRuns">0</span></div>
+            <div>Wickets: <span id="cricWickets">0</span>/3</div>
+            <div>Overs: <span id="cricOvers">0.0</span>/2.0</div>
+        </div>
+
+        <!-- Canvas Area where items spawn -->
+        <div class="game-canvas-area" id="gameCanvas">
+            <div class="game-info-text" id="gameInstruction">Get Ready!</div>
+            <!-- Cricket Bat Button -->
+            <button id="batBtn" class="game-action-btn" style="display:none; position:absolute; bottom:30px;" onclick="hitCricketBall()">HIT SHOT! 🏏</button>
+            
+            <!-- Game Over Screen -->
+            <div class="game-over-modal" id="gameOverModal">
+                <h2>Game Over!</h2>
+                <p style="font-size:24px; margin-bottom:20px;">You scored <span id="finalScore">0</span> XP!</p>
+                <button class="play-btn" style="width:auto; padding:15px 30px; font-size:20px;" onclick="claimPointsAndQuit()">Claim Points & Exit</button>
+            </div>
+        </div>
+
+        <!-- Cricket Commentary Box -->
+        <div class="cricket-commentary" id="commentaryBox" style="display:none;">
+            Welcome to Gyanichacha Cricket Stadium! 🎙️
         </div>
     </section>
 
@@ -958,8 +1103,20 @@
 
     <script type="module">
         // 1. Firebase ki Machine Import Kar rahe hain
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Firebase Connection Start
+        const firebaseConfig = {
+          apiKey: "AIzaSyAkDQGXBE8v6bvwesCms1GK5hYUXNTvq4s",
+          authDomain: "gyanichacha-5bf95.firebaseapp.com",
+          projectId: "gyanichacha-5bf95",
+          storageBucket: "gyanichacha-5bf95.firebasestorage.app",
+          messagingSenderId: "564005525839",
+          appId: "1:564005525839:web:7fa9e90a3428cb1bb64d3a",
+          measurementId: "G-HTVKVSXG2X"
+        };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -979,33 +1136,40 @@
         const gamifiedSection = document.getElementById('gamifiedSection');
         const studySection = document.getElementById('studySection');
         const studentDashboard = document.getElementById('studentDashboard');
+        const gameArena = document.getElementById('gameArena');
         const navbar = document.getElementById('navbar');
-        const siteFooter = document.getElementById('siteFooter'); // Footer ko pakda
+        const siteFooter = document.getElementById('siteFooter'); 
 
         window.goHome = function() {
+            hideAll();
             landingSection.style.display = 'flex';
-            gamifiedSection.style.display = 'none';
-            studySection.style.display = 'none';
-            studentDashboard.style.display = 'none';
             navbar.style.display = 'flex';
-            siteFooter.style.display = 'block'; // Footer dikhao
+            siteFooter.style.display = 'block';
         }
 
         window.showStudyMaterial = function() {
+            hideAll();
+            studySection.style.display = 'block';
+            navbar.style.display = 'flex';
+            siteFooter.style.display = 'block';
+        }
+
+        window.openModal = function() {
+            modal.classList.add('active');
+        }
+
+        window.closeModal = function() {
+            modal.classList.remove('active');
+        }
+
+        function hideAll() {
             landingSection.style.display = 'none';
             gamifiedSection.style.display = 'none';
             studentDashboard.style.display = 'none';
-            studySection.style.display = 'block';
-            navbar.style.display = 'flex';
-            siteFooter.style.display = 'block'; // Footer dikhao
-        }
-
-        window.openModal = function() {
-            modal.classList.add('active');
-        }
-
-        window.closeModal = function() {
-            modal.classList.remove('active');
+            studySection.style.display = 'none';
+            gameArena.style.display = 'none';
+            navbar.style.display = 'none';
+            siteFooter.style.display = 'none';
         }
 
         window.processLogin = function() {
@@ -1018,37 +1182,27 @@
             }
 
             closeModal();
-            landingSection.style.display = 'none';
-            navbar.style.display = 'none'; 
-            siteFooter.style.display = 'none'; // Game setup ke time footer chupao
+            hideAll();
             gamifiedSection.style.display = 'flex';
         }
 
-        // 4. Bacha jab Play dabayega, Data Cloud me Save hoga!
-            navbar.style.display = 'flex';
-        }
-
-        window.openModal = function() {
-            modal.classList.add('active');
-        }
-
-        window.closeModal = function() {
-            modal.classList.remove('active');
-        }
-
-        window.processLogin = function() {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPass').value;
-
-            if(email === "" || pass === "") {
-                alert("Please enter Email/Phone and Password to login!");
-                return;
+        // Mini Puzzle logic
+        window.checkPuzzle = function(ans, btn) {
+            if(ans === 9) {
+                document.getElementById('puzzleSuccess').style.display = 'block';
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('startBtn').innerHTML = "Blast Off! 🚀";
+                document.getElementById('startBtn').style.background = "linear-gradient(135deg, #00b894 0%, #00cec9 100%)";
+            } else {
+                btn.style.background = "#d63031";
+                btn.style.color = "white";
+                btn.style.borderColor = "#d63031";
+                setTimeout(() => {
+                    btn.style.background = "white";
+                    btn.style.color = "var(--secondary-color)";
+                    btn.style.borderColor = "var(--secondary-color)";
+                }, 500);
             }
-
-            closeModal();
-            landingSection.style.display = 'none';
-            navbar.style.display = 'none'; 
-            gamifiedSection.style.display = 'flex';
         }
 
         // Saving Data to Firebase Cloud
@@ -1074,25 +1228,22 @@
             btn.disabled = true;
             
             try {
-                // Firebase Database Path
                 const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
                 const docSnap = await getDoc(userRef);
                 
                 if (docSnap.exists()) {
                     await updateDoc(userRef, { heroName: name, grade: grade });
                 } else {
-                    await setDoc(userRef, { heroName: name, grade: grade, points: 250 }); // Added bonus for puzzle
+                    await setDoc(userRef, { heroName: name, grade: grade, points: 250 });
                 }
 
-                // Show Dashboard
-                gamifiedSection.style.display = 'none';
+                hideAll();
                 studentDashboard.style.display = 'block';
                 navbar.style.display = 'flex'; 
                 
                 document.getElementById('dashName').innerText = "Hello, " + name + "!";
                 document.getElementById('dashGrade').innerText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
                 
-                // Real-time Database Listener for Points
                 onSnapshot(userRef, (liveData) => {
                     if (liveData.exists()) {
                         document.getElementById('dashPoints').innerText = liveData.data().points;
@@ -1109,26 +1260,243 @@
             }
         }
 
-        // Adding Points to Database upon playing games
-        window.earnPoints = async function(pointsToAdd) {
-            if (!currentUser) return;
+
+        /* ==============================================
+           GAME ENGINE (ALPHABET, MATH TABLES, CRICKET)
+           ============================================== */
+        let currentGame = "";
+        let gameScore = 0;
+        let gameInterval;
+        let targetSpawner;
+
+        // Cricket Variables
+        let runs = 0;
+        let ballsPlayed = 0;
+        let wickets = 0;
+        let cricketCommentaries = [
+            "Wah! Kya chhakka mara hai! 🏏💥",
+            "Behtareen shot, seedha boundary ke bahar! 🌟",
+            "2 Run liye, bahut tezi se daude! 🏃‍♂️",
+            "Ouch! Catch out ho gaye. Wicket gir gaya! 😢",
+            "Single mila, strike rotate kiya. 👍",
+            "Shandaar Chauka! 4 Runs! 🔥",
+            "Clean Bowled! Stumps ud gaye! 🎯"
+        ];
+
+        window.openGame = function(type) {
+            currentGame = type;
+            gameScore = 0;
+            document.getElementById('gameScore').innerText = "0";
+            document.getElementById('gameOverModal').style.display = 'none';
+            document.getElementById('commentaryBox').style.display = 'none';
+            document.getElementById('cricketStatusBar').style.display = 'none';
+            document.getElementById('batBtn').style.display = 'none';
             
-            const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-            try {
-                const docSnap = await getDoc(userRef);
-                if (docSnap.exists()) {
-                    const currentPoints = docSnap.data().points;
-                    await updateDoc(userRef, { points: currentPoints + pointsToAdd });
-                    alert("🎉 Super Hero! You just earned " + pointsToAdd + " XP!");
-                }
-            } catch (error) {
-                console.error("Error adding points:", error);
+            // Clear canvas
+            document.querySelectorAll('.game-target').forEach(e => e.remove());
+
+            hideAll();
+            gameArena.style.display = 'block';
+
+            if(type === 'alphabet') {
+                document.getElementById('gameTitle').innerText = "Alphabet Shooter 🅰️";
+                document.getElementById('gameInstruction').innerText = "Shoot (Click) the falling Alphabets!";
+                setTimeout(startAlphabetGame, 2000);
+            } 
+            else if (type === 'table') {
+                document.getElementById('gameTitle').innerText = "Table Shooter 🔢";
+                document.getElementById('gameInstruction').innerText = "Shoot the Correct Answer!";
+                setTimeout(startTableGame, 2000);
+            }
+            else if (type === 'cricket') {
+                document.getElementById('gameTitle').innerText = "Gully Cricket 🏏";
+                document.getElementById('gameInstruction').innerText = "Tap HIT SHOT to score runs!";
+                document.getElementById('commentaryBox').style.display = 'block';
+                document.getElementById('commentaryBox').innerText = "Welcome to Gyanichacha Cricket Stadium! 🎙️";
+                document.getElementById('cricketStatusBar').style.display = 'flex';
+                document.getElementById('batBtn').style.display = 'block';
+                
+                runs = 0; ballsPlayed = 0; wickets = 0;
+                updateCricketBoard();
             }
         }
 
-        const style = document.createElement('style');
-        style.textContent = `@keyframes spin { 100% { transform: rotate(360deg); } }`;
-        document.head.appendChild(style);
+        window.quitGame = function() {
+            clearInterval(gameInterval);
+            clearInterval(targetSpawner);
+            hideAll();
+            studentDashboard.style.display = 'block';
+            navbar.style.display = 'flex';
+        }
+
+        function spawnTarget(text, isCorrect, onclickLogic) {
+            const canvas = document.getElementById('gameCanvas');
+            const target = document.createElement('div');
+            target.className = 'game-target';
+            target.innerText = text;
+            
+            // Random Size and Position
+            let size = Math.floor(Math.random() * 40) + 60; // 60px to 100px
+            target.style.width = size + 'px';
+            target.style.height = size + 'px';
+            
+            // Start from top, random left
+            target.style.top = '-100px';
+            target.style.left = Math.floor(Math.random() * (canvas.offsetWidth - size)) + 'px';
+            
+            target.onclick = function() {
+                if(isCorrect) {
+                    gameScore += 10;
+                    document.getElementById('gameScore').innerText = gameScore;
+                    target.style.background = "#00b894";
+                    target.innerText = "💥";
+                } else {
+                    gameScore = Math.max(0, gameScore - 5);
+                    document.getElementById('gameScore').innerText = gameScore;
+                    target.style.background = "#d63031";
+                    target.innerText = "❌";
+                }
+                setTimeout(() => target.remove(), 200);
+                if(onclickLogic) onclickLogic(isCorrect);
+            };
+
+            canvas.appendChild(target);
+
+            // Animate falling
+            let pos = -100;
+            let speed = Math.random() * 2 + 2;
+            let fallInt = setInterval(() => {
+                pos += speed;
+                target.style.top = pos + 'px';
+                if(pos > canvas.offsetHeight) {
+                    clearInterval(fallInt);
+                    target.remove();
+                }
+            }, 20);
+        }
+
+        // --- 1. ALPHABET GAME LOGIC ---
+        function startAlphabetGame() {
+            document.getElementById('gameInstruction').style.display = 'none';
+            let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let timeLeft = 30; // 30 seconds game
+            
+            targetSpawner = setInterval(() => {
+                let randomLetter = alphabets[Math.floor(Math.random() * alphabets.length)];
+                spawnTarget(randomLetter, true, null); // all are correct to shoot
+            }, 800);
+
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('gameInstruction').style.display = 'block';
+                document.getElementById('gameInstruction').innerText = "Time Left: " + timeLeft + "s";
+                if(timeLeft <= 0) endGame();
+            }, 1000);
+        }
+
+        // --- 2. TABLE SHOOTER LOGIC (Tables 2 to 10) ---
+        function startTableGame() {
+            let rounds = 5;
+            let currentRound = 0;
+            
+            function nextQuestion() {
+                if(currentRound >= rounds) return endGame();
+                
+                document.querySelectorAll('.game-target').forEach(e => e.remove());
+                let num1 = Math.floor(Math.random() * 9) + 2; // 2 to 10
+                let num2 = Math.floor(Math.random() * 10) + 1; // 1 to 10
+                let correctAns = num1 * num2;
+                
+                document.getElementById('gameInstruction').innerText = `Shoot the answer: ${num1} x ${num2} = ?`;
+                
+                // Spawn 1 correct and 2 wrong answers
+                let answers = [correctAns, correctAns + Math.floor(Math.random()*5)+1, correctAns - Math.floor(Math.random()*4)-1];
+                // Shuffle array
+                answers.sort(() => Math.random() - 0.5);
+
+                answers.forEach((ans) => {
+                    setTimeout(() => {
+                        spawnTarget(ans, ans === correctAns, (isCorrect) => {
+                            if(isCorrect) {
+                                currentRound++;
+                                setTimeout(nextQuestion, 500);
+                            }
+                        });
+                    }, Math.random() * 1000);
+                });
+            }
+            nextQuestion();
+        }
+
+        // --- 3. GULLY CRICKET LOGIC ---
+        function updateCricketBoard() {
+            document.getElementById('cricRuns').innerText = runs;
+            document.getElementById('cricWickets').innerText = wickets;
+            let overs = Math.floor(ballsPlayed / 6);
+            let remBalls = ballsPlayed % 6;
+            document.getElementById('cricOvers').innerText = overs + "." + remBalls;
+            document.getElementById('gameScore').innerText = runs * 10; // 10 XP per run
+        }
+
+        window.hitCricketBall = function() {
+            if(ballsPlayed >= 12 || wickets >= 3) return; // 2 Overs match
+
+            let outcomes = [0, 1, 2, 4, 6, 'W'];
+            let result = outcomes[Math.floor(Math.random() * outcomes.length)];
+            let commBox = document.getElementById('commentaryBox');
+            
+            ballsPlayed++;
+
+            if(result === 'W') {
+                wickets++;
+                commBox.innerText = cricketCommentaries[3] + " ya " + cricketCommentaries[6];
+                commBox.style.borderColor = "#d63031";
+            } else {
+                runs += result;
+                if(result === 6) commBox.innerText = cricketCommentaries[0];
+                else if(result === 4) commBox.innerText = cricketCommentaries[5];
+                else if(result === 2) commBox.innerText = cricketCommentaries[2];
+                else if(result === 1) commBox.innerText = cricketCommentaries[4];
+                else commBox.innerText = "Dot ball! Koi run nahi. 🏏";
+                
+                commBox.style.borderColor = "#00b894";
+            }
+
+            updateCricketBoard();
+
+            if(ballsPlayed >= 12 || wickets >= 3) {
+                setTimeout(() => {
+                    commBox.innerText = "Innings Over! Well played Hero! 🏆";
+                    gameScore = runs * 10;
+                    endGame();
+                }, 1500);
+            }
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            clearInterval(targetSpawner);
+            document.getElementById('batBtn').style.display = 'none';
+            document.getElementById('finalScore').innerText = gameScore;
+            document.getElementById('gameOverModal').style.display = 'flex';
+        }
+
+        window.claimPointsAndQuit = async function() {
+            if (currentUser && gameScore > 0) {
+                const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
+                try {
+                    const docSnap = await getDoc(userRef);
+                    if (docSnap.exists()) {
+                        const currentPoints = docSnap.data().points;
+                        await updateDoc(userRef, { points: currentPoints + gameScore });
+                    }
+                } catch (error) {
+                    console.error("Error adding game points:", error);
+                }
+            }
+            quitGame();
+        }
+
     </script>
 </body>
 </html>
