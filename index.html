@@ -770,23 +770,53 @@
             <div class="mission-card">
                 <h3>1. Math Puzzle</h3>
                 <p>Solve 5 basic puzzles to earn 50 stars!</p>
-                <button class="play-btn">Play Now</button>
+                <button class="play-btn" onclick="earnPoints(50)">Play Now (+50)</button>
             </div>
             <div class="mission-card" style="border-left-color: var(--accent-color);">
                 <h3>2. Science Video</h3>
                 <p>Watch the animated journey of a water drop.</p>
-                <button class="play-btn" style="background: var(--accent-color);">Watch & Earn</button>
+                <button class="play-btn" style="background: var(--accent-color);" onclick="earnPoints(30)">Watch & Earn (+30)</button>
             </div>
             <div class="mission-card" style="border-left-color: var(--primary-color);">
                 <h3>3. Daily Quiz</h3>
                 <p>Test your knowledge and level up your hero.</p>
-                <button class="play-btn" style="background: var(--primary-color);">Start Quiz</button>
+                <button class="play-btn" style="background: var(--primary-color);" onclick="earnPoints(100)">Start Quiz (+100)</button>
             </div>
         </div>
     </section>
 
-    <script>
-        // Modal & Navigation Logic
+    <script type="module">
+        // 1. Firebase ki Machine Import Kar rahe hain
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 2. Aapka Firebase Secret Code
+        const firebaseConfig = {
+          apiKey: "AIzaSyAkDQGXBE8v6bvwesCms1GK5hYUXNTvq4s",
+          authDomain: "gyanichacha-5bf95.firebaseapp.com",
+          projectId: "gyanichacha-5bf95",
+          storageBucket: "gyanichacha-5bf95.firebasestorage.app",
+          messagingSenderId: "564005525839",
+          appId: "1:564005525839:web:7fa9e90a3428cb1bb64d3a",
+          measurementId: "G-HTVKVSXG2X"
+        };
+
+        // 3. Database Connection Start
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gyanichacha';
+        
+        let currentUser = null;
+
+        // Bacha bina pareshani ke login rahe, uske liye background connection
+        signInAnonymously(auth).catch((error) => console.error("Auth Error:", error));
+        onAuthStateChanged(auth, (user) => {
+            if (user) currentUser = user;
+        });
+
+        // HTML elements pakad rahe hain
         const modal = document.getElementById('authModal');
         const landingSection = document.getElementById('landingSection');
         const gamifiedSection = document.getElementById('gamifiedSection');
@@ -794,7 +824,7 @@
         const studentDashboard = document.getElementById('studentDashboard');
         const navbar = document.getElementById('navbar');
 
-        function goHome() {
+        window.goHome = function() {
             landingSection.style.display = 'flex';
             gamifiedSection.style.display = 'none';
             studySection.style.display = 'none';
@@ -802,7 +832,7 @@
             navbar.style.display = 'flex';
         }
 
-        function showStudyMaterial() {
+        window.showStudyMaterial = function() {
             landingSection.style.display = 'none';
             gamifiedSection.style.display = 'none';
             studentDashboard.style.display = 'none';
@@ -810,16 +840,15 @@
             navbar.style.display = 'flex';
         }
 
-        function openModal() {
+        window.openModal = function() {
             modal.classList.add('active');
         }
 
-        function closeModal() {
+        window.closeModal = function() {
             modal.classList.remove('active');
         }
 
-        // Parent Login Validation -> Switches to Gamified Profile Selector
-        function processLogin() {
+        window.processLogin = function() {
             const email = document.getElementById('authEmail').value;
             const pass = document.getElementById('authPass').value;
 
@@ -828,15 +857,14 @@
                 return;
             }
 
-            // Hide Modal and Landing Page, Show Gamified Section
             closeModal();
             landingSection.style.display = 'none';
-            navbar.style.display = 'none'; // Optional: Hide navbar during game setup
+            navbar.style.display = 'none'; 
             gamifiedSection.style.display = 'flex';
         }
 
-        // Gamified Profile Logic (Original logic)
-        function startAdventure() {
+        // 4. Bacha jab Play dabayega, Data Cloud me Save hoga!
+        window.startAdventure = async function() {
             const btn = document.getElementById('startBtn');
             const name = document.getElementById('heroName').value.trim();
             const grade = document.getElementById('heroGrade').value;
@@ -844,51 +872,77 @@
 
             if (name === "" || grade === "") {
                 errorMsg.style.display = 'block';
-                const card = document.querySelector('.gamified-section .login-card');
-                card.style.transform = 'translateX(-10px)';
-                setTimeout(() => card.style.transform = 'translateX(10px)', 100);
-                setTimeout(() => card.style.transform = 'translateX(-10px)', 200);
-                setTimeout(() => card.style.transform = 'translateX(0)', 300);
+                return;
+            }
+
+            if (!currentUser) {
+                alert("Cloud se connect ho rahe hain... Bas 1 second rukiye aur dobara click kijiye!");
                 return;
             }
 
             errorMsg.style.display = 'none';
-            btn.innerHTML = 'Preparing World... <span style="animation: spin 1s linear infinite;">⏳</span>';
+            btn.innerHTML = 'Connecting to Cloud... ⏳';
             btn.style.opacity = '0.9';
             btn.disabled = true;
             
-            setTimeout(() => {
-                // Hide setup, show dashboard
+            try {
+                // Firebase Database File ka address
+                const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
+                const docSnap = await getDoc(userRef);
+                
+                if (docSnap.exists()) {
+                    // Agar purana bacha hai toh update karo
+                    await updateDoc(userRef, { heroName: name, grade: grade });
+                } else {
+                    // Naya bacha hai toh 150 points gift mein do
+                    await setDoc(userRef, { heroName: name, grade: grade, points: 150 });
+                }
+
+                // Dashboard kholo
                 gamifiedSection.style.display = 'none';
                 studentDashboard.style.display = 'block';
-                navbar.style.display = 'flex'; // Show navbar so they can navigate
+                navbar.style.display = 'flex'; 
                 
-                // Update Dashboard Data
                 document.getElementById('dashName').innerText = "Welcome, " + name + "!";
-                const gradeText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
-                document.getElementById('dashGrade').innerText = gradeText;
+                document.getElementById('dashGrade').innerText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
                 
-                // Points animation
-                let points = 0;
-                const pointsEl = document.getElementById('dashPoints');
-                const interval = setInterval(() => {
-                    points += 10;
-                    pointsEl.innerText = points;
-                    if(points >= 150) clearInterval(interval); // Give 150 starting bonus points!
-                }, 50);
+                // 5. MAGIC! Real-time Live Points Updater
+                onSnapshot(userRef, (liveData) => {
+                    if (liveData.exists()) {
+                        document.getElementById('dashPoints').innerText = liveData.data().points;
+                    }
+                }, (error) => console.error("Error reading points:", error));
 
-                // Reset button for future use
-                btn.innerHTML = 'Start Playing <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+            } catch (error) {
+                console.error("Firebase Error:", error);
+                alert("Oops! Internet error. Please check your connection.");
+            } finally {
+                btn.innerHTML = 'Start Playing';
                 btn.style.opacity = '1';
                 btn.disabled = false;
-            }, 1500);
+            }
         }
 
-        // Loading spinner animation CSS
+        // 6. Game Khelne Par Asli Points Add Karna
+        window.earnPoints = async function(pointsToAdd) {
+            if (!currentUser) return;
+            
+            const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
+            try {
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    const currentPoints = docSnap.data().points;
+                    // Database me points add karo
+                    await updateDoc(userRef, { points: currentPoints + pointsToAdd });
+                    alert("🎉 Awesome! You earned " + pointsToAdd + " points!");
+                }
+            } catch (error) {
+                console.error("Error adding points:", error);
+            }
+        }
+
         const style = document.createElement('style');
-        style.textContent = `
-            @keyframes spin { 100% { transform: rotate(360deg); } }
-        `;
+        style.textContent = `@keyframes spin { 100% { transform: rotate(360deg); } }`;
         document.head.appendChild(style);
     </script>
 </body>
