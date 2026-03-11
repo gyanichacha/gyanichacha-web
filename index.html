@@ -3,1521 +3,605 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gyanichacha - Premium Learning App</title>
-    <!-- Professional yet kid-friendly Google Font -->
+    <title>Gyanichacha - Pan-India Learning Platform</title>
+    <!-- Fonts & Confetti -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        /* CORE DESIGN TOKENS */
         :root {
-            --primary-color: #6C5CE7;
-            --secondary-color: #00CEC9;
-            --accent-color: #FD79A8;
-            --warning-color: #FDCB6E;
-            --bg-gradient-1: #E0C3FC;
-            --bg-gradient-2: #8EC5FC;
-            --text-dark: #2D3436;
-            --text-light: #636E72;
-            --white: #FFFFFF;
+            --primary-color: #6C5CE7; --secondary-color: #00CEC9; --accent-color: #FD79A8;
+            --warning-color: #FDCB6E; --success-color: #00b894; --bg-gradient-1: #E0C3FC;
+            --bg-gradient-2: #8EC5FC; --text-dark: #2D3436; --text-light: #636E72; --white: #FFFFFF;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Nunito', sans-serif; background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%); background-attachment: fixed; min-height: 100vh; overflow-x: hidden; transition: direction 0.3s; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Animated Background Elements */
-        .shape {
-            position: fixed;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(8px);
-            animation: float 8s infinite ease-in-out alternate;
-            z-index: 0;
-        }
-
-        .shape-circle {
-            border-radius: 50%;
-            width: 350px;
-            height: 350px;
-            top: -50px;
-            left: -100px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
-        }
-
-        .shape-square {
-            border-radius: 40px;
-            width: 250px;
-            height: 250px;
-            bottom: 5%;
-            right: 2%;
-            transform: rotate(45deg);
-            animation-delay: 2s;
-            background: linear-gradient(135deg, rgba(253, 121, 168, 0.2), rgba(108, 92, 231, 0.2));
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-40px) rotate(15deg); }
-        }
-
-        /* =========================================
-           1. NAVBAR & LANDING PAGE STYLES
-           ========================================= */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-bottom: 2px solid rgba(255,255,255,0.5);
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            text-shadow: 2px 2px 0px rgba(108, 92, 231, 0.2);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 35px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 800;
-            font-size: 16px;
-            transition: all 0.3s;
-            padding: 5px 10px;
-            border-radius: 10px;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-            background: rgba(108, 92, 231, 0.1);
-        }
-
-        .login-btn-nav {
-            background: var(--white);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            padding: 10px 28px;
-            border-radius: 25px;
-            font-weight: 800;
-            font-family: 'Nunito', sans-serif;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 0 rgba(108, 92, 231, 0.2);
-        }
-
-        .login-btn-nav:hover {
-            background: var(--primary-color);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 0 rgba(108, 92, 231, 0.4);
-        }
-
-        .landing-section {
-            display: flex;
-            min-height: 100vh;
-            padding: 120px 5% 50px 5%;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero-text {
-            flex: 1;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 40px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            border: 2px solid rgba(255,255,255,0.8);
-        }
-
-        .hero-text h1 {
-            font-size: 52px;
-            color: var(--text-dark);
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 900;
-        }
-
-        .hero-text h1 span {
-            color: var(--primary-color);
-            text-shadow: 2px 2px 0px rgba(108, 92, 231, 0.2);
-        }
-
-        .hero-text p {
-            font-size: 18px;
-            color: var(--text-light);
-            margin-bottom: 35px;
-            line-height: 1.6;
-            font-weight: 700;
-        }
-
-        .main-cta {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #897BFF 100%);
-            color: var(--white);
-            border: none;
-            padding: 18px 40px;
-            border-radius: 30px;
-            font-size: 20px;
-            font-weight: 800;
-            font-family: 'Nunito', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 8px 0 #4B40A5, 0 15px 25px rgba(108, 92, 231, 0.4);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .main-cta:hover {
-            transform: translateY(4px);
-            box-shadow: 0 4px 0 #4B40A5, 0 10px 15px rgba(108, 92, 231, 0.4);
-        }
-
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 180px;
-            animation: float 4s infinite ease-in-out alternate;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
-        }
-
-        /* =========================================
-           2. REGISTRATION / LOGIN MODAL
-           ========================================= */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .auth-modal {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 30px;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2), 0 0 0 10px rgba(255,255,255,0.2);
-            position: relative;
-            transform: translateY(30px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-        }
-
-        .modal-overlay.active .auth-modal {
-            transform: translateY(0) scale(1);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            background: rgba(0,0,0,0.05);
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            color: var(--text-light);
-            transition: all 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .close-btn:hover {
-            background: var(--accent-color);
-            color: var(--white);
-            transform: rotate(90deg);
-        }
-
-        .auth-modal h2 {
-            font-size: 30px;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            font-weight: 900;
-        }
-
-        .auth-modal p {
-            color: var(--text-light);
-            margin-bottom: 30px;
-            font-weight: 700;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 18px;
-            border-radius: 16px;
-            border: 2px solid #DFE6E9;
-            margin-bottom: 15px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            outline: none;
-            transition: all 0.3s;
-            background: #F8F9FA;
-            color: var(--text-dark);
-        }
-
-        .input-field:focus {
-            border-color: var(--primary-color);
-            background: var(--white);
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
-        }
-
-        .auth-submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--text-dark);
-            color: var(--white);
-            border: none;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 800;
-            font-family: 'Nunito', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            box-shadow: 0 6px 0 #1e2527;
-        }
-
-        .auth-submit-btn:hover {
-            background: var(--primary-color);
-            box-shadow: 0 6px 0 #4B40A5;
-            transform: translateY(-2px);
-        }
+        /* UI COMPONENTS */
+        .navbar { position: fixed; top: 0; width: 100%; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 2px solid rgba(255,255,255,0.5); }
+        .logo { font-size: 28px; font-weight: 900; color: var(--primary-color); cursor: pointer; }
+        .nav-links { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s;}
+        .nav-links a:hover { color: var(--primary-color); }
         
-        .auth-submit-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0px 0 #4B40A5;
-        }
-
-        /* =========================================
-           3. GAMIFIED REGISTRATION (HERO SETUP + GAME)
-           ========================================= */
-        .gamified-section {
-            display: none;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 10;
-            padding: 20px;
-        }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 255, 255, 0.4);
-            text-align: center;
-            width: 100%;
-            max-width: 480px;
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--white);
-        }
-
-        .mascot-wrapper {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--warning-color), #FF9F00);
-            border-radius: 50%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 50px;
-            margin-top: -90px;
-            border: 8px solid var(--white);
-            box-shadow: 0 15px 25px rgba(255, 159, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .login-card h1 {
-            color: var(--text-dark);
-            font-size: 36px;
-            font-weight: 900;
-            margin: 0 0 5px 0;
-        }
-
-        .login-card p.subtitle {
-            color: var(--primary-color);
-            font-size: 16px;
-            font-weight: 800;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-            padding-left: 5px;
-        }
-
-        .game-input {
-            width: 100%;
-            padding: 18px;
-            border-radius: 16px;
-            border: 2px solid #DFE6E9;
-            font-size: 16px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            color: var(--text-dark);
-            background-color: #F8F9FA;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .game-input:focus {
-            border-color: var(--primary-color);
-            background-color: var(--white);
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.15);
-        }
-
-        /* --- MINI GAME STYLES --- */
-        .mini-game-box {
-            background: #F8F9FA;
-            border: 3px dashed var(--secondary-color);
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 25px;
-            margin-bottom: 25px;
-        }
-
-        .mini-game-box h3 {
-            font-size: 18px;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-            font-weight: 800;
-        }
-
-        .mini-game-box p {
-            font-size: 14px;
-            color: var(--text-light);
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .puzzle-options {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .puzzle-btn {
-            background: var(--white);
-            border: 2px solid var(--secondary-color);
-            color: var(--secondary-color);
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            font-size: 20px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Nunito', sans-serif;
-        }
-
-        .puzzle-btn:hover {
-            background: var(--secondary-color);
-            color: var(--white);
-            transform: scale(1.1);
-        }
-
-        .puzzle-success {
-            display: none;
-            color: #00b894;
-            font-weight: 900;
-            font-size: 18px;
-            animation: popIn 0.5s ease;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            80% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .game-btn {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #897BFF 100%);
-            color: var(--white);
-            border: none;
-            padding: 20px 30px;
-            border-radius: 18px;
-            font-size: 20px;
-            font-weight: 900;
-            font-family: 'Nunito', sans-serif;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-            box-shadow: 0 8px 0 #4B40A5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .game-btn:active:not(:disabled) {
-            transform: translateY(8px);
-            box-shadow: 0 0px 0 #4B40A5;
-        }
-
-        .game-btn:disabled {
-            background: #DFE6E9;
-            box-shadow: 0 8px 0 #B2BEC3;
-            color: #636E72;
-            cursor: not-allowed;
-            transform: translateY(0);
-        }
-
-        .error-message {
-            color: #D63031;
-            font-size: 14px;
-            font-weight: 800;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            display: none;
-            text-align: left;
-            padding-left: 5px;
-        }
-
-        /* =========================================
-           5. STUDY MATERIAL SECTION (MAGICAL LIBRARY)
-           ========================================= */
-        .study-section {
-            display: none;
-            min-height: 100vh;
-            padding: 120px 5% 50px 5%;
-            position: relative;
-            z-index: 10;
-        }
-        .study-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .book-card {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 25px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-            position: relative;
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--white);
-        }
-        .book-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary-color);
-            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
-        }
-        .book-icon {
-            font-size: 55px;
-            margin-bottom: 20px;
-            background: #F8F9FA;
-            width: 90px;
-            height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 25px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
-        }
-        .book-badge {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: var(--secondary-color);
-            color: var(--white);
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 900;
-        }
-        .book-card h3 {
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            font-size: 22px;
-            font-weight: 900;
-        }
-        .book-card p {
-            color: var(--text-light);
-            font-size: 15px;
-            margin-bottom: 25px;
-            line-height: 1.6;
-            font-weight: 700;
-        }
-        .download-btn {
-            background: var(--white);
-            color: var(--primary-color);
-            border: 2px solid var(--primary-color);
-            padding: 12px 20px;
-            border-radius: 15px;
-            font-weight: 900;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Nunito', sans-serif;
-            font-size: 16px;
-        }
-        .download-btn:hover {
-            background: var(--primary-color);
-            color: var(--white);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
-        }
+        .btn { padding: 10px 20px; border-radius: 20px; border: none; font-weight: 800; font-family: inherit; cursor: pointer; transition: 0.3s; font-size: 16px; }
+        .btn-primary { background: var(--primary-color); color: var(--white); box-shadow: 0 5px 0 #4B40A5; }
+        .btn-primary:active { transform: translateY(4px); box-shadow: 0 1px 0 #4B40A5; }
+        .btn-success { background: var(--success-color); color: var(--white); box-shadow: 0 5px 0 #008f72; }
+        .btn-success:active { transform: translateY(4px); box-shadow: 0 1px 0 #008f72; }
+        .btn-warning { background: var(--warning-color); color: var(--text-dark); box-shadow: 0 5px 0 #d35400; }
+        .btn-warning:active { transform: translateY(4px); box-shadow: 0 1px 0 #d35400; }
         
-        /* Filter Buttons for Library */
-        .filter-btn {
-            background: var(--white);
-            border: 2px solid #DFE6E9;
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-weight: 800;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Nunito', sans-serif;
-            font-size: 16px;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary-color);
-            color: var(--white);
-            border-color: var(--primary-color);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
-        }
+        .lang-switcher { padding: 8px 12px; border-radius: 20px; border: 2px solid var(--primary-color); font-family: inherit; font-weight: 800; cursor: pointer; outline: none; background: white; color: var(--primary-color); }
 
-        /* =========================================
-           6. STUDENT DASHBOARD
-           ========================================= */
-        .dashboard-section {
-            display: none;
-            min-height: 100vh;
-            padding: 110px 5% 50px 5%;
-            position: relative;
-            z-index: 10;
-        }
-        .dashboard-header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 35px;
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
-            backdrop-filter: blur(15px);
-            margin-bottom: 40px;
-            border: 3px solid var(--primary-color);
-        }
-        .hero-profile h2 {
-            color: var(--text-dark);
-            font-size: 32px;
-            font-weight: 900;
-            margin-bottom: 5px;
-        }
-        .hero-profile p {
-            color: var(--primary-color);
-            font-weight: 800;
-            font-size: 18px;
-        }
-        .points-card {
-            background: linear-gradient(135deg, #FFBE0B 0%, #FF9F00 100%);
-            padding: 20px 40px;
-            border-radius: 20px;
-            color: white;
-            text-align: center;
-            box-shadow: 0 10px 20px rgba(255, 190, 11, 0.3);
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .points-card h3 { font-size: 32px; font-weight: 900; margin-bottom: 5px; }
-        .points-card span { font-size: 15px; font-weight: 800; opacity: 0.9; }
+        section { display: none; min-height: 100vh; padding: 120px 5% 50px 5%; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* GRIDS & CARDS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s; position: relative; border-top: 8px solid var(--primary-color); display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card-emoji { font-size: 50px; text-align: center; margin: 10px 0; }
+        .card h3 { font-size: 20px; margin-bottom: 10px; color: var(--text-dark); }
+        .card p { font-size: 15px; color: var(--text-light); flex-grow: 1; margin-bottom: 15px; }
+        .price-tag { position: absolute; top: 15px; right: 15px; background: #f1f2f6; padding: 4px 10px; border-radius: 10px; font-weight: 900; color: var(--primary-color); }
+
+        /* MODALS & FORMS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; overflow-y: auto; padding: 20px; }
+        .auth-modal { background: white; padding: 40px; border-radius: 30px; width: 100%; max-width: 450px; text-align: center; position: relative; margin: auto; }
+        .input-field { width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #ddd; margin-bottom: 15px; font-family: inherit; font-size: 16px; font-weight: 700; outline: none; }
+        .input-field:focus { border-color: var(--primary-color); }
         
-        .missions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
-        .mission-card {
-            background: var(--white);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border-left: 8px solid var(--secondary-color);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .mission-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        .mission-card h3 { color: var(--text-dark); margin-bottom: 12px; font-size: 22px; font-weight: 900;}
-        .mission-card p { color: var(--text-light); margin-bottom: 20px; font-size: 15px; font-weight: 700; line-height: 1.5; }
-        .play-btn {
-            background: var(--secondary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            width: 100%;
-            font-family: 'Nunito', sans-serif;
-            transition: opacity 0.2s;
-        }
-        .play-btn:hover { opacity: 0.8; }
-
-        /* =========================================
-           7. FOOTER SECTION (Contact Details)
-           ========================================= */
-        .site-footer {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 25px 5%;
-            text-align: center;
-            border-top: 2px solid #DFE6E9;
-            position: relative;
-            z-index: 10;
-        }
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-dark);
-            font-weight: 800;
-            font-size: 18px;
-            text-decoration: none;
-            transition: color 0.3s, transform 0.2s;
-            background: #F8F9FA;
-            padding: 10px 20px;
-            border-radius: 15px;
-            border: 2px solid #DFE6E9;
-        }
-        .contact-item:hover {
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.1);
-        }
-
-        /* =========================================
-           8. GAME ARENA (NEW GAMIFICATION UI)
-           ========================================= */
-        .game-arena-section {
-            display: none;
-            min-height: 100vh;
-            padding: 100px 5% 50px 5%;
-            position: relative;
-            z-index: 20;
-            background: linear-gradient(135deg, #1e272e 0%, #2f3640 100%);
-        }
-        .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px 30px;
-            border-radius: 20px;
-            color: white;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .game-canvas-area {
-            background: url('https://www.transparenttextures.com/patterns/cubes.png'), rgba(0,0,0,0.3);
-            height: 60vh;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .game-target {
-            position: absolute;
-            background: radial-gradient(circle, var(--accent-color), #d63031);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 900;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            user-select: none;
-            transition: transform 0.1s;
-        }
-        .game-target:active {
-            transform: scale(1.2);
-        }
-        .game-info-text {
-            color: white;
-            font-size: 28px;
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            text-align: center;
-            width: 100%;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            z-index: 5;
-        }
-        .cricket-commentary {
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--text-dark);
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 20px;
-            font-weight: 800;
-            font-size: 18px;
-            text-align: center;
-            min-height: 60px;
-            border: 3px solid var(--warning-color);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .game-action-btn {
-            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 20px;
-            font-size: 24px;
-            font-weight: 900;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 6px 0 #019074;
-            transition: all 0.2s;
-            font-family: 'Nunito', sans-serif;
-        }
-        .game-action-btn:active {
-            transform: translateY(6px);
-            box-shadow: 0 0px 0 #019074;
-        }
-        /* End Game Modal */
-        .game-over-modal {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.8);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 30;
-            color: white;
-        }
-        .game-over-modal h2 { font-size: 40px; color: var(--warning-color); margin-bottom: 10px; }
+        /* ADMIN PANEL & REPOSITORY */
+        .admin-panel { background: #fff; border-radius: 20px; padding: 30px; border: 4px solid var(--text-dark); }
+        .admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
+        .admin-tab { flex: 1; min-width: 120px; padding: 10px; background: #eee; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .admin-tab.active { background: var(--text-dark); color: white; }
+        .admin-form { display: none; }
+        .admin-form.active { display: flex; flex-direction: column; gap: 10px; }
+        .repo-item { padding: 10px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+        
+        /* GAME ARENA SHELL */
+        #gameArena { background: linear-gradient(135deg, #1e272e 0%, #2f3640 100%); }
+        .game-canvas-area { background: rgba(0,0,0,0.3); height: 60vh; border-radius: 20px; position: relative; overflow: hidden; border: 4px solid var(--primary-color); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .game-target { position: absolute; background: radial-gradient(circle, var(--accent-color), #d63031); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 24px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); user-select: none; }
+        .game-over-modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 30; color: white; }
+        
+        /* URDU (RTL) specific tweaks */
+        body[dir="rtl"] .price-tag { right: auto; left: 15px; }
+        body[dir="rtl"] .close-btn { right: auto; left: 25px; }
+        
+        .login-module-box { padding: 20px; border: 2px solid #f1f2f6; border-radius: 15px; margin-bottom: 15px; transition: 0.3s; }
+        .login-module-box:hover { border-color: var(--primary-color); background: #fafafa; }
     </style>
 </head>
 <body>
-    <!-- Floating Background Shapes -->
-    <div class="shape shape-circle"></div>
-    <div class="shape shape-square"></div>
 
-    <!-- 1. NAVIGATION BAR -->
-    <nav class="navbar" id="navbar">
-        <div class="logo" onclick="goHome()">🚀 Gyanichacha</div>
+    <!-- CORE NAVBAR -->
+    <nav class="navbar">
+        <div class="logo" onclick="showSection('landingSection')">🚀 Gyanichacha</div>
         <div class="nav-links">
-            <a href="#" onclick="showStudyMaterial()">📚 Library</a>
-            <a href="#">Classes 1-8</a>
-            <a href="#">Parents Area</a>
-            <button class="login-btn-nav" onclick="openModal()">Login / Join</button>
+            <select id="languageSwitcher" class="lang-switcher" onchange="setLanguage(this.value)">
+                <option value="en">English (A-B)</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                <option value="ml">മലയാളം (Malayalam)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                <option value="ur">اردو (Urdu)</option>
+                <option value="or">ଓଡ଼ିଆ (Odia)</option>
+            </select>
+            <a onclick="showSection('studySection')" data-i18n="nav_lib">📚 Library</a>
+            <a onclick="showSection('rewardSection')" data-i18n="nav_store">🎁 Store</a>
+            <a id="navDashBtn" style="display:none;" onclick="showSection('dashboardSection')" data-i18n="nav_dash">🎮 Dashboard</a>
+            
+            <!-- Admin specific nav button (Hidden by default) -->
+            <a id="navAdminBtn" style="display:none; background: var(--text-dark); color: white; padding: 5px 10px; border-radius: 10px;" onclick="showSection('adminSection')">🛠️ Admin</a>
+            
+            <button class="btn btn-warning" onclick="openModal('paymentModal')" data-i18n="nav_premium">📝 Premium</button>
+            <button class="btn btn-primary" id="authBtn" onclick="openModal('authModal')" data-i18n="nav_login">Login</button>
         </div>
     </nav>
 
-    <!-- 2. LANDING PAGE SECTION -->
-    <section class="landing-section" id="landingSection">
-        <div class="hero-text">
-            <h1>Make learning a <br><span>Grand Adventure!</span></h1>
-            <p>India's most loved learning app for Kids. Interactive games, coding quests, and animated lessons for Classes 1 to 8.</p>
-            <button class="main-cta" onclick="openModal()">
-                Start Playing Free
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-        </div>
-        <div class="hero-image">
-            👨‍🚀
+    <!-- 1. LANDING PAGE -->
+    <section id="landingSection" style="display:flex; align-items:center; justify-content:center; text-align:center;">
+        <div style="max-width: 800px; background: rgba(255,255,255,0.8); padding: 50px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+            <h1 style="font-size: 50px; color: var(--text-dark); margin-bottom: 20px;" data-i18n="hero_title">Education <span style="color:var(--primary-color)">FREE!</span></h1>
+            <p style="font-size: 20px; color: var(--text-light); margin-bottom: 30px;" data-i18n="hero_desc">Role-based Access Engine: Separate controls for Admin and Students.</p>
+            <button class="btn btn-primary" style="font-size: 22px; padding: 15px 40px;" onclick="openModal('authModal')" data-i18n="hero_btn">Start Now 🚀</button>
         </div>
     </section>
 
-    <!-- 3. REGISTRATION / LOGIN MODAL -->
-    <div class="modal-overlay" id="authModal">
+    <!-- 2. SETUP MODAL (FOR STUDENTS ONLY) -->
+    <section id="setupSection" style="display:flex; align-items:center; justify-content:center;">
         <div class="auth-modal">
-            <button class="close-btn" onclick="closeModal()">✖</button>
-            <h2>Parents Login 👨‍👩‍👧</h2>
-            <p>Enter details to unlock the magical world!</p>
-            
-            <input type="email" id="authEmail" class="input-field" placeholder="Parent's Email or Mobile No." required>
-            <input type="password" id="authPass" class="input-field" placeholder="Secret Password" required>
-            
-            <button class="auth-submit-btn" onclick="processLogin()">Secure Unlock 🔓</button>
-            <p style="text-align: center; margin-top: 25px; font-size: 15px; color: var(--text-light);">New hero? <a href="#" style="color: var(--primary-color); font-weight: 900; text-decoration: none;">Create Free Account</a></p>
+            <h2 data-i18n="setup_title">Hero Setup</h2>
+            <p style="color: var(--text-light); margin-bottom: 15px;">Welcome Guest/Student! Setup your profile.</p>
+            <input type="text" id="heroName" class="input-field" placeholder="Your Name?">
+            <select id="heroClass" class="input-field">
+                <option value="" disabled selected data-i18n="setup_class">Select Class</option>
+                <script>for(let i=1; i<=10; i++) document.write(`<option value="${i}">Class ${i}</option>`)</script>
+            </select>
+            <button onclick="startAdventure()" id="startBtn" class="btn btn-primary" style="width:100%;" data-i18n="setup_btn">Blast Off! 🚀</button>
         </div>
-    </div>
+    </section>
 
-    <!-- 4. GAMIFIED CLASS SELECTION + MINI GAME (HERO SETUP) -->
-    <div class="gamified-section" id="gamifiedSection">
-        <div class="login-card">
-            <div class="mascot-wrapper">🦁</div>
-            
-            <h1>Hero Setup</h1>
-            <p class="subtitle">Design your avatar and prove your skills!</p>
-            
-            <div class="form-group">
-                <label for="heroName">What is your name, Hero?</label>
-                <input type="text" id="heroName" class="game-input" placeholder="Type your full name here..." autocomplete="off" required>
+    <!-- 3. DYNAMIC DASHBOARD (STUDENTS) -->
+    <section id="dashboardSection">
+        <div style="background: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+            <div>
+                <h2 id="userDashName">Hello!</h2>
+                <p id="userDashClass" style="color: var(--primary-color); font-weight: bold; font-size: 18px;">Class Explorer</p>
+            </div>
+            <div style="background: linear-gradient(135deg, #FFBE0B, #FF9F00); padding: 15px 25px; border-radius: 15px; font-size: 28px; font-weight: 900; color: white; box-shadow: 0 5px 15px rgba(255,190,11,0.3);">
+                🪙 <span id="userPoints">0</span>
+            </div>
+        </div>
+        <h3 id="missionHeading" style="font-size: 24px; margin-bottom: 20px; font-weight: 900;" data-i18n="dash_head">🎮 Games for My Class</h3>
+        <div class="grid" id="missionsGrid"></div> 
+        <div id="noMissionsMsg" style="display:none; text-align:center; padding: 50px; background:white; border-radius:20px; color:var(--text-light);" data-i18n="no_mission">No games assigned for this class yet.</div>
+    </section>
+
+    <!-- 4. DYNAMIC TOY STORE -->
+    <section id="rewardSection">
+        <h1 style="text-align: center; font-size: 40px; margin-bottom: 30px; font-weight: 900;" data-i18n="store_title">🎁 Super Store</h1>
+        <div class="grid" id="storeGrid"></div>
+        <div id="noStoreMsg" style="display:none; text-align:center; padding: 50px; background:white; border-radius:20px; color:var(--text-light);" data-i18n="no_store">No items added to the store yet.</div>
+    </section>
+
+    <!-- 5. DYNAMIC LIBRARY -->
+    <section id="studySection">
+        <h1 style="text-align: center; font-size: 40px; margin-bottom: 30px; font-weight: 900;" data-i18n="lib_title">📚 Library</h1>
+        <div class="grid" id="booksGrid"></div>
+        <div id="noBooksMsg" style="display:none; text-align:center; padding: 50px; background:white; border-radius:20px; color:var(--text-light);" data-i18n="no_book">No books added for this class yet.</div>
+    </section>
+
+    <!-- 6. DEDICATED ADMIN SECTION (Role Based) -->
+    <section id="adminSection">
+        <div style="display:flex; justify-content:space-between; align-items:center; background: var(--text-dark); color:white; padding:20px 30px; border-radius:20px; margin-bottom: 30px;">
+            <h1 style="font-size: 30px; margin:0;">🛠️ Master Control Panel</h1>
+            <span style="background:var(--success-color); padding:5px 15px; border-radius:20px; font-weight:bold;">Role: Admin</span>
+        </div>
+
+        <div class="admin-panel" id="adminPanel" style="display:block;">
+            <h2 style="margin-bottom: 20px; color:var(--text-dark);">Business Repository Manager</h2>
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('tabBook')">📖 Upload Book</button>
+                <button class="admin-tab" onclick="switchAdminTab('tabStore')">🎁 Add Product</button>
+                <button class="admin-tab" onclick="switchAdminTab('tabMission')">🎮 Assign Game</button>
+                <button class="admin-tab" onclick="switchAdminTab('tabRepo')">🗄️ View Repository</button>
             </div>
             
-            <div class="form-group">
-                <label for="heroGrade">Select your Mission Level</label>
-                <select id="heroGrade" class="game-input" style="appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236C5CE7%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 14px auto;" required>
-                    <option value="" disabled selected>Tap to choose your Class</option>
-                    <option value="1">Class 1 - Novice Explorer</option>
-                    <option value="2">Class 2 - Junior Scholar</option>
-                    <option value="3">Class 3 - Rising Star</option>
-                    <option value="4">Class 4 - Quest Master</option>
-                    <option value="5">Class 5 - Logic Knight</option>
-                    <option value="6">Class 6 - Science Wizard</option>
-                    <option value="7">Class 7 - Tech Guru</option>
-                    <option value="8">Class 8 - Grandmaster</option>
-                </select>
-            </div>
-
-            <div class="error-message" id="errorMsg">Oops! Don't leave blanks!</div>
-
-            <!-- REGISTRATION MINI GAME -->
-            <div class="mini-game-box" id="miniGameBox">
-                <h3>Solve to Unlock Rocket 🚀</h3>
-                <p>Power up your spaceship by solving this:</p>
-                <h2 style="font-size: 28px; color: var(--primary-color); margin-bottom: 15px;">5 + 4 = ?</h2>
-                <div class="puzzle-options" id="puzzleOptions">
-                    <button class="puzzle-btn" onclick="checkPuzzle(8, this)">8</button>
-                    <button class="puzzle-btn" onclick="checkPuzzle(9, this)">9</button>
-                    <button class="puzzle-btn" onclick="checkPuzzle(10, this)">10</button>
+            <div id="tabBook" class="admin-form active">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="bTitleEn" class="input-field" placeholder="Book Title (English)" style="flex:1;">
+                    <input type="text" id="bTitleHi" class="input-field" placeholder="Book Title (Regional/Hindi)" style="flex:1;">
                 </div>
-                <div class="puzzle-success" id="puzzleSuccess">✨ Power 100% Loaded! ✨</div>
+                <input type="number" id="bClass" class="input-field" placeholder="For Class (1-10)">
+                <select id="bType" class="input-field"><option value="chapter">Free Chapter</option><option value="test">Paid Test Paper</option></select>
+                <input type="text" id="bLink" class="input-field" placeholder="PDF File Name or Drive Link">
+                <button class="btn btn-primary" onclick="dbAddBook()">Save Book to Database</button>
             </div>
-            
-            <!-- Button is DISABLED initially -->
-            <button onclick="startAdventure()" id="startBtn" class="game-btn" disabled>
-                Locked 🔒 Solve Puzzle First!
-            </button>
-        </div>
-    </div>
 
-    <!-- 5. STUDY MATERIAL SECTION (LIBRARY) -->
-    <section class="study-section" id="studySection">
-        <div class="study-header">
-            <h1 style="color: var(--text-dark); font-size: 46px; font-weight: 900;">📚 The Magical Library</h1>
-            <p style="color: var(--text-light); font-size: 20px; font-weight: 700; margin-top: 10px;">Download Books, Worksheets, and PDF Notes!</p>
-        </div>
-        
-        <div style="text-align: center; margin-bottom: 40px; display: flex; justify-content: center; flex-wrap: wrap; gap: 15px;">
-            <button class="filter-btn active">All Books</button>
-            <button class="filter-btn">Class 1-2</button>
-            <button class="filter-btn">Class 3-5</button>
-            <button class="filter-btn">Class 6-8</button>
-        </div>
+            <div id="tabStore" class="admin-form">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="sNameEn" class="input-field" placeholder="Item Name (English)" style="flex:1;">
+                    <input type="text" id="sNameHi" class="input-field" placeholder="Item Name (Regional)" style="flex:1;">
+                </div>
+                <input type="number" id="sPrice" class="input-field" placeholder="Price in Coins (e.g. 5000)">
+                <input type="text" id="sEmoji" class="input-field" placeholder="Emoji (e.g. 🏎️)">
+                <button class="btn btn-primary" onclick="dbAddStoreItem()">Save Product to Store</button>
+            </div>
 
-        <div class="book-grid">
-            <div class="book-card">
-                <div class="book-icon">📗</div>
-                <span class="book-badge">Class 1</span>
-                <h3>Math Magic</h3>
-                <p>Fun with numbers, counting, and basic math logic for beginners.</p>
-                <button class="download-btn">Read PDF ⬇️</button>
+            <div id="tabMission" class="admin-form">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="mTitleEn" class="input-field" placeholder="Mission Name (English)" style="flex:1;">
+                    <input type="text" id="mTitleHi" class="input-field" placeholder="Mission Name (Regional)" style="flex:1;">
+                </div>
+                <input type="number" id="mClass" class="input-field" placeholder="For Class (1-10)">
+                <select id="mGameType" class="input-field">
+                    <option value="alphabet">Alphabet Shooter Game</option>
+                    <option value="table">Math Table Game</option>
+                    <option value="cricket">Cricket Math Game</option>
+                </select>
+                <button class="btn btn-primary" onclick="dbAddMission()">Assign Game to Class</button>
             </div>
-            <div class="book-card">
-                <div class="book-icon">📘</div>
-                <span class="book-badge">Class 4</span>
-                <h3>Science Explorer</h3>
-                <p>Discover the wonders of the universe, plants, and animals.</p>
-                <button class="download-btn">Read PDF ⬇️</button>
-            </div>
-            <div class="book-card">
-                <div class="book-icon">📙</div>
-                <span class="book-badge">Class 8</span>
-                <h3>Coding for Kids</h3>
-                <p>Learn logic, basic programming, and start building games.</p>
-                <button class="download-btn">Read PDF ⬇️</button>
-            </div>
-            
-            <!-- Admin Upload Box -->
-            <div class="book-card" style="border: 3px dashed var(--primary-color); background: rgba(255,255,255,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center;" onclick="alert('Admin Feature: Later we will connect this to Firebase Storage to upload real PDF files from your computer!')">
-                <div class="book-icon" style="background: transparent; color: var(--primary-color); font-size: 50px; margin-bottom: 0; box-shadow: none;">➕</div>
-                <h3 style="color: var(--primary-color); margin-top: 10px;">Upload New Book</h3>
-                <p>Admin only: Add new PDFs to the Gyanichacha library database.</p>
+
+            <div id="tabRepo" class="admin-form">
+                <h3 style="margin-bottom: 10px; color: var(--primary-color);">Database Records</h3>
+                <div id="adminRepoList" style="max-height: 250px; overflow-y: auto; background: #f8f9fa; border-radius: 10px; border: 2px solid #dfe6e9; padding: 10px;">
+                    <!-- Managed via JS -->
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 6. STUDENT DASHBOARD SECTION (UPDATED FOR GAMES) -->
-    <section class="dashboard-section" id="studentDashboard">
-        <div class="dashboard-header">
-            <div class="hero-profile">
-                <h2 id="dashName">Hero Name</h2>
-                <p id="dashGrade">Grade X - Role</p>
-            </div>
-            <div class="points-card">
-                <h3>⭐ <span id="dashPoints">0</span></h3>
-                <span>Total XP Points</span>
-            </div>
+    <!-- 8. GAME ARENA SHELL WITH GAMIFICATION LOGIC -->
+    <section id="gameArena">
+        <div style="display:flex; justify-content:space-between; align-items:center; background: rgba(255,255,255,0.1); padding:15px; border-radius:20px; color:white; margin-bottom:20px; backdrop-filter: blur(10px);">
+            <button onclick="quitGame()" class="btn btn-warning" data-i18n="btn_quit">⬅️ Quit</button>
+            <h2 id="gameTitle" style="margin:0;">Game Engine</h2>
+            <h2 style="margin:0;">Score: <span id="gameScore">0</span></h2>
         </div>
 
-        <h2 style="color: var(--text-dark); margin-bottom: 25px; font-size: 28px; font-weight: 900;">🎮 Class 1 Game Zone</h2>
-        <div class="missions-grid">
-            <div class="mission-card">
-                <h3>1. Alphabet Shooter 🅰️</h3>
-                <p>Aasmaan se girti hui A-Z ABCD ko bandook (click) se goli maaro aur points kamao!</p>
-                <button class="play-btn" onclick="openGame('alphabet')">Play Mission 🎯</button>
-            </div>
-            <div class="mission-card" style="border-left-color: var(--accent-color);">
-                <h3>2. Table Shooter 🔢</h3>
-                <p>2 se 10 tak ke Pahaade (Tables) aayenge. Sahi answer wale gubbare ko goli maaro!</p>
-                <button class="play-btn" style="background: var(--accent-color);" onclick="openGame('table')">Shoot Tables 🎯</button>
-            </div>
-            <div class="mission-card" style="border-left-color: var(--primary-color);">
-                <h3>3. Gully Cricket 🏏</h3>
-                <p>Khel-khel mein Maths aur Memory! Shot maaro, Runs banao aur live Commentary suno.</p>
-                <button class="play-btn" style="background: var(--primary-color);" onclick="openGame('cricket')">Play Cricket 🏏</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. GAME ARENA (NEW SECTION FOR PLAYING) -->
-    <section class="game-arena-section" id="gameArena">
-        <div class="game-header">
-            <button onclick="quitGame()" style="background:transparent; border:none; color:white; font-size:18px; font-weight:bold; cursor:pointer;">⬅️ Back to Dashboard</button>
-            <h2 id="gameTitle" style="margin:0;">Game Title</h2>
-            <div style="font-size: 20px; font-weight:bold;">Score: <span id="gameScore">0</span></div>
-        </div>
-        
-        <!-- Cricket Status Bar (Only for Cricket) -->
         <div id="cricketStatusBar" style="display:none; justify-content:space-around; background:rgba(255,255,255,0.9); padding:10px; border-radius:15px; margin-bottom:15px; font-weight:bold; color:black; font-size:20px;">
             <div>Runs: <span id="cricRuns">0</span></div>
             <div>Wickets: <span id="cricWickets">0</span>/3</div>
             <div>Overs: <span id="cricOvers">0.0</span>/2.0</div>
         </div>
 
-        <!-- Canvas Area where items spawn -->
         <div class="game-canvas-area" id="gameCanvas">
-            <div class="game-info-text" id="gameInstruction">Get Ready!</div>
-            <!-- Cricket Bat Button -->
-            <button id="batBtn" class="game-action-btn" style="display:none; position:absolute; bottom:30px;" onclick="hitCricketBall()">HIT SHOT! 🏏</button>
+            <h2 id="gameInstruction" style="color:white; z-index:10; position:absolute; top:20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Get Ready!</h2>
+            <button id="batBtn" class="btn btn-success" style="display:none; position:absolute; bottom:30px; z-index:10; font-size:24px; padding:15px 40px;" onclick="hitCricketBall()">HIT SHOT 🏏</button>
             
-            <!-- Game Over Screen -->
             <div class="game-over-modal" id="gameOverModal">
-                <h2>Game Over!</h2>
-                <p style="font-size:24px; margin-bottom:20px;">You scored <span id="finalScore">0</span> XP!</p>
-                <button class="play-btn" style="width:auto; padding:15px 30px; font-size:20px;" onclick="claimPointsAndQuit()">Claim Points & Exit</button>
+                <h2 style="font-size: 40px; color: var(--warning-color); margin-bottom: 10px;">Game Over!</h2>
+                <p style="font-size:24px; margin-bottom:20px;">You scored <span id="finalScore">0</span> Coins!</p>
+                <button class="btn btn-success" style="font-size:20px;" onclick="claimPointsAndQuit()">Claim Coins & Exit</button>
             </div>
         </div>
 
-        <!-- Cricket Commentary Box -->
-        <div class="cricket-commentary" id="commentaryBox" style="display:none;">
-            Welcome to Gyanichacha Cricket Stadium! 🎙️
-        </div>
+        <div id="commentaryBox" style="display:none; padding:15px; background:white; border-radius:15px; margin-top:20px; text-align:center; font-weight:800; font-size:18px; border: 3px solid var(--warning-color);">Welcome to the Stadium! 🎙️</div>
     </section>
 
-    <!-- 7. FOOTER (Contact Section) -->
-    <footer class="site-footer" id="siteFooter">
-        <h3 style="color: var(--primary-color); font-weight: 900; margin-bottom: 5px; font-size: 22px;">Gyanichacha</h3>
-        <p style="color: var(--text-light); font-weight: 600;">India's most loved learning app for Kids.</p>
-        
-        <div class="contact-info">
-            <a href="mailto:ceo@gyanichacha.com" class="contact-item">
-                📧 ceo@gyanichacha.com
-            </a>
-            <a href="tel:+917054632047" class="contact-item">
-                📞 +91 7054632047
-            </a>
+    <!-- MODALS -->
+    <!-- ROLE BASED LOGIN MODAL -->
+    <div class="modal-overlay" id="authModal">
+        <div class="auth-modal">
+            <button class="btn close-btn" style="position:absolute; top:10px; right:10px; background:none; box-shadow:none; color:#aaa; font-size:24px;" onclick="closeModal('authModal')">✖</button>
+            <h2 data-i18n="login_title" style="margin-bottom: 20px;">Select Access Level</h2>
+            
+            <!-- GUEST / STUDENT LOGIN -->
+            <div class="login-module-box">
+                <h3 style="color: var(--primary-color);">👨‍🎓 Student / Guest</h3>
+                <p style="font-size: 14px; color: var(--text-light); margin: 5px 0 15px;" data-i18n="log_guest_desc">Learn, play games and earn rewards!</p>
+                <button class="btn btn-primary" style="width:100%;" onclick="handleLogin('student')" data-i18n="log_guest_btn">Login as Student (Free)</button>
+            </div>
+
+            <!-- ADMIN LOGIN -->
+            <div class="login-module-box">
+                <h3 style="color: var(--text-dark);">🛠️ Admin Access</h3>
+                <p style="font-size: 14px; color: var(--text-light); margin: 5px 0;">Control content and manage platform.</p>
+                <input type="password" id="adminPassInput" class="input-field" placeholder="Admin Password" style="margin-top: 10px; padding: 10px;">
+                <button class="btn btn-warning" style="width:100%;" onclick="handleLogin('admin')" data-i18n="log_admin_btn">Admin Login</button>
+            </div>
         </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="auth-modal">
+            <button class="btn close-btn" style="position:absolute; top:10px; right:10px; background:none; box-shadow:none; color:#aaa; font-size:24px;" onclick="closeModal('paymentModal')">✖</button>
+            <h2 data-i18n="pay_title">Unlock Tests (Demo)</h2>
+            <p style="color: var(--text-light); margin-bottom: 20px;">Courses are free! Pay a nominal charge to unlock premium mock tests.</p>
+            <button class="btn btn-warning" style="width:100%; padding:15px; font-size:18px;" onclick="processPayment(49, 'tests')" data-i18n="pay_btn">Pay ₹49 to Unlock All Tests</button>
+        </div>
+    </div>
+
+    <!-- Celebration Modal -->
+    <div id="celebrationModal" onclick="this.style.display='none'">
+        <div style="font-size: 100px;">🏆</div>
+        <h1 style="font-size: 60px; color: var(--warning-color); margin-bottom: 20px; text-shadow: 0 0 20px var(--warning-color);">SUPER MILESTONE!</h1>
+        <p style="font-size: 30px; font-weight: 800;" data-i18n="cel_d1">Wow! You earned 5000 Coins!</p>
+        <button class="btn btn-success" style="width:auto; padding:15px 40px; margin-top:30px;">Claim Reward! 🎁</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h3 style="color: var(--primary-color); font-weight: 900; margin-bottom: 5px; font-size: 22px;">Gyanichacha</h3>
+        <p style="color: var(--text-light); font-weight: 600;" data-i18n="foot_desc">India's most loved physical reward learning app. 100% Free Education.</p>
     </footer>
 
+    <!-- FIREBASE & CORE LOGIC -->
     <script type="module">
-        // 1. Firebase ki Machine Import Kar rahe hain
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Connection Start
-        const firebaseConfig = {
-          apiKey: "AIzaSyAkDQGXBE8v6bvwesCms1GK5hYUXNTvq4s",
-          authDomain: "gyanichacha-5bf95.firebaseapp.com",
-          projectId: "gyanichacha-5bf95",
-          storageBucket: "gyanichacha-5bf95.firebasestorage.app",
-          messagingSenderId: "564005525839",
-          appId: "1:564005525839:web:7fa9e90a3428cb1bb64d3a",
-          measurementId: "G-HTVKVSXG2X"
+        const firebaseConfig = { apiKey: "AIzaSyAkDQGXBE8v6bvwesCms1GK5hYUXNTvq4s", authDomain: "gyanichacha-5bf95.firebaseapp.com", projectId: "gyanichacha-5bf95", storageBucket: "gyanichacha-5bf95.firebasestorage.app", messagingSenderId: "564005525839", appId: "1:564005525839:web:7fa9e90a3428cb1bb64d3a" };
+        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app); const appId = "gyanichacha";
+
+        let user = null; let userData = null;
+        let isOfflineMode = false; let offlinePoints = 0; let offlineTestsUnlocked = false; 
+
+        // =========================================
+        // MULTI-LANGUAGE (PAN-INDIA) DICTIONARY
+        // =========================================
+        let currentLang = 'en';
+        const dict = {
+            'en': { nav_lib:"📚 Library", nav_store:"🎁 Store", nav_dash:"🎮 Dashboard", nav_premium:"📝 Premium", nav_login:"Login", hero_title:"Education <span style='color:var(--primary-color)'>FREE!</span>", hero_desc:"Role-based Access Engine: Separate controls for Admin and Students.", hero_btn:"Start Now 🚀", setup_title:"Hero Setup", setup_class:"Select Your Class", setup_btn:"Blast Off! 🚀", dash_head:"🎮 Games for My Class", no_mission:"No games assigned for this class yet.", store_title:"🎁 Super Store", no_store:"No items added to the store yet.", lib_title:"📚 Library", no_book:"No books added for this class yet.", admin_btn:"Business & Admin Panel", pay_title:"Unlock Tests (Demo)", pay_btn:"Pay ₹49 to Unlock", login_title:"Select Access Level", log_guest_desc:"Learn, play games and earn rewards!", log_guest_btn:"Login as Student (Free)", log_admin_btn:"Admin Login", btn_quit:"⬅️ Quit", btn_play:"Play Now", btn_open:"📖 Open", btn_redeem:"Redeem", btn_pay:"🔒 Pay ₹49", btn_hello: "Hello, ", wrong_pass:"Wrong Password!" },
+            'hi': { nav_lib:"📚 पुस्तकालय", nav_store:"🎁 स्टोर", nav_dash:"🎮 डैशबोर्ड", nav_premium:"📝 प्रीमियम", nav_login:"लॉगिन", hero_title:"पढ़ाई बिल्कुल <span style='color:var(--primary-color)'>FREE!</span>", hero_desc:"रोल-बेस्ड एक्सेस इंजन: एडमिन और बच्चों के लिए अलग-अलग कंट्रोल।", hero_btn:"शुरू करें 🚀", setup_title:"रजिस्ट्रेशन", setup_class:"अपनी क्लास चुनें", setup_btn:"उड़ान भरें! 🚀", dash_head:"🎮 मेरी क्लास के गेम्स", no_mission:"एडमिन ने अभी गेम्स नहीं डाले हैं।", store_title:"🎁 सुपर स्टोर", no_store:"स्टोर में अभी आइटम नहीं हैं।", lib_title:"📚 पुस्तकालय", no_book:"अभी इस क्लास की किताबें नहीं हैं।", admin_btn:"एडमिन पैनल", pay_title:"टेस्ट खोलें", pay_btn:"₹49 देकर खोलें", login_title:"एक्सेस चुनें", log_guest_desc:"खेलें, पढ़ें और इनाम जीतें!", log_guest_btn:"स्टूडेंट लॉगिन (Free)", log_admin_btn:"एडमिन लॉगिन", btn_quit:"⬅️ बाहर जाएँ", btn_play:"खेलें", btn_open:"📖 खोलें", btn_redeem:"रिडीम करें", btn_pay:"🔒 ₹49 दें", btn_hello: "नमस्ते, ", wrong_pass:"गलत पासवर्ड!" },
+            'or': { nav_lib:"📚 ଲାଇਬ୍ରେରୀ", nav_store:"🎁 ଷ୍ଟୋର୍", nav_dash:"🎮 ଡ୍ୟାସବୋର୍ଡ", nav_premium:"📝 ପ୍ରିମିୟମ୍", nav_login:"ଲଗଇନ୍", hero_title:"ଶିକ୍ଷା <span style='color:var(--primary-color)'>ମାଗଣା!</span>", hero_desc:"ରୋଲ୍-ଆଧାରିତ ଆକ୍ସେସ୍ ଇଞ୍ଜିନ୍: ଆଡମିନ୍ ଏବଂ ଛାତ୍ରମାନଙ୍କ ପାଇଁ ଅଲଗା ନିୟନ୍ତ୍ରଣ।", hero_btn:"ଆରମ୍ଭ କରନ୍ତୁ 🚀", setup_title:"ହିରୋ ସେଟଅପ୍", setup_class:"ଶ୍ରେଣୀ ବାଛନ୍ତୁ", setup_btn:"ଆରମ୍ଭ କରନ୍ତୁ! 🚀", dash_head:"🎮 ମୋ ଶ୍ରେଣୀର ଖେଳ", no_mission:"ଏହି ଶ୍ରେଣୀ ପାଇଁ କୌଣସି ଖେଳ ନାହିଁ।", store_title:"🎁 ସୁପର ଷ୍ଟୋର୍", no_store:"ଷ୍ଟୋରରେ କୌଣସି ସାମଗ୍ରୀ ନାହିଁ।", lib_title:"📚 ଲାଇਬ୍ରେରୀ", no_book:"ଏହି ଶ୍ରେଣୀ ପାଇଁ କୌଣସି ପୁସ୍ତକ ନାହିଁ।", admin_btn:"ଆଡମିନ୍ ପ୍ୟାନେଲ୍", pay_title:"ଟେଷ୍ଟ ଅନଲକ୍ କରନ୍ତୁ", pay_btn:"₹49 ଦିଅନ୍ତୁ", login_title:"ପ୍ରବେଶ ସ୍ତର ବାଛନ୍ତୁ", log_guest_desc:"ଖେଳନ୍ତୁ, ପଢ଼ନ୍ତୁ ଏବଂ ପୁରସ୍କାର ଜିତନ୍ତୁ!", log_guest_btn:"ଛାତ୍ର ଭାବରେ ଲଗଇନ୍ କରନ୍ତୁ", log_admin_btn:"ଆଡମିନ୍ ଲଗଇନ୍", btn_quit:"⬅️ ବାହାରନ୍ତୁ", btn_play:"ଖେଳନ୍ତୁ", btn_open:"📖 ଖୋଲନ୍ତୁ", btn_redeem:"ରିଡିମ୍ କରନ୍ତୁ", btn_pay:"🔒 ₹49 ଦିଅନ୍ତୁ", btn_hello: "ନମସ୍କାର, ", wrong_pass:"ଭୁଲ ପାସୱାର୍ଡ!" }
+            // Other languages fallback to English automatically by the 't' function below
         };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gyanichacha';
-        
-        let currentUser = null;
-        let isOfflineMode = false;
-        let offlinePoints = 250;
 
-        // Auto Login System
-        signInAnonymously(auth).catch((error) => console.error("Auth Error:", error));
-        onAuthStateChanged(auth, (user) => {
-            if (user) currentUser = user;
+        window.setLanguage = (lang) => { 
+            currentLang = lang; 
+            document.body.setAttribute('dir', lang === 'ur' ? 'rtl' : 'ltr');
+            document.body.style.fontFamily = lang === 'ur' ? 'Arial, sans-serif' : "'Nunito', sans-serif";
+
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                if(dict[lang] && dict[lang][el.getAttribute('data-i18n')]) el.innerHTML = dict[lang][el.getAttribute('data-i18n')]; 
+                else if (dict['en'][el.getAttribute('data-i18n')]) el.innerHTML = dict['en'][el.getAttribute('data-i18n')];
+            }); 
+
+            if(userData && userData.role !== 'admin') {
+                document.getElementById('userDashName').innerText = t("btn_hello") + userData.heroName;
+            }
+
+            if(dbBooks.length > 0) renderLibraryUI();
+            if(dbStore.length > 0) renderStoreUI();
+            if(dbMissions.length > 0) renderMissionsUI();
+        };
+
+        const t = (key) => dict[currentLang] ? (dict[currentLang][key] || dict['en'][key] || key) : (dict['en'][key] || key);
+        const getLocText = (obj, prefix) => {
+            let capLang = currentLang.charAt(0).toUpperCase() + currentLang.slice(1);
+            return obj[prefix + capLang] || obj[prefix + 'Hi'] || obj[prefix + 'En'] || obj[prefix] || '';
+        };
+
+        // =========================================
+        // ROLE-BASED AUTH & ROUTER
+        // =========================================
+        window.handleLogin = (role) => {
+            if (role === 'admin') {
+                const pass = document.getElementById('adminPassInput').value;
+                if (pass !== 'chacha123') return alert(t('wrong_pass'));
+            }
+            // Store the requested role temporarily until Firebase creates the anonymous user
+            sessionStorage.setItem('pendingRole', role);
+            signInAnonymously(auth).then(() => closeModal('authModal'));
+        };
+
+        onAuthStateChanged(auth, async (u) => { 
+            if(u) { 
+                user = u; 
+                let pendingRole = sessionStorage.getItem('pendingRole');
+                if (pendingRole) {
+                    const userRef = doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data');
+                    await setDoc(userRef, { role: pendingRole }, { merge: true });
+                    sessionStorage.removeItem('pendingRole');
+                }
+                loadUserProfile(); 
+                loadPublicData(); 
+            } 
         });
 
-        // HTML elements
-        const modal = document.getElementById('authModal');
-        const landingSection = document.getElementById('landingSection');
-        const gamifiedSection = document.getElementById('gamifiedSection');
-        const studySection = document.getElementById('studySection');
-        const studentDashboard = document.getElementById('studentDashboard');
-        const gameArena = document.getElementById('gameArena');
-        const navbar = document.getElementById('navbar');
-        const siteFooter = document.getElementById('siteFooter'); 
+        window.showSection = (id) => { document.querySelectorAll('section').forEach(s => s.style.display = 'none'); document.getElementById(id).style.display = (id === 'landingSection' || id === 'setupSection') ? 'flex' : 'block'; };
+        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 
-        window.goHome = function() {
-            hideAll();
-            landingSection.style.display = 'flex';
-            navbar.style.display = 'flex';
-            siteFooter.style.display = 'block';
-        }
-
-        window.showStudyMaterial = function() {
-            hideAll();
-            studySection.style.display = 'block';
-            navbar.style.display = 'flex';
-            siteFooter.style.display = 'block';
-        }
-
-        window.openModal = function() {
-            modal.classList.add('active');
-        }
-
-        window.closeModal = function() {
-            modal.classList.remove('active');
-        }
-
-        function hideAll() {
-            landingSection.style.display = 'none';
-            gamifiedSection.style.display = 'none';
-            studentDashboard.style.display = 'none';
-            studySection.style.display = 'none';
-            gameArena.style.display = 'none';
-            navbar.style.display = 'none';
-            siteFooter.style.display = 'none';
-        }
-
-        window.processLogin = function() {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPass').value;
-
-            if(email === "" || pass === "") {
-                alert("Please enter Email/Phone and Password to login!");
-                return;
-            }
-
-            closeModal();
-            hideAll();
-            gamifiedSection.style.display = 'flex';
-        }
-
-        // Mini Puzzle logic
-        window.checkPuzzle = function(ans, btn) {
-            if(ans === 9) {
-                document.getElementById('puzzleSuccess').style.display = 'block';
-                document.getElementById('startBtn').disabled = false;
-                document.getElementById('startBtn').innerHTML = "Blast Off! 🚀";
-                document.getElementById('startBtn').style.background = "linear-gradient(135deg, #00b894 0%, #00cec9 100%)";
-            } else {
-                btn.style.background = "#d63031";
-                btn.style.color = "white";
-                btn.style.borderColor = "#d63031";
-                setTimeout(() => {
-                    btn.style.background = "white";
-                    btn.style.color = "var(--secondary-color)";
-                    btn.style.borderColor = "var(--secondary-color)";
-                }, 500);
-            }
-        }
-
-        function setupDashboardView(name, grade) {
-            hideAll();
-            studentDashboard.style.display = 'block';
-            navbar.style.display = 'flex'; 
-            document.getElementById('dashName').innerText = "Hello, " + name + "!";
-            document.getElementById('dashGrade').innerText = document.getElementById('heroGrade').options[document.getElementById('heroGrade').selectedIndex].text;
-        }
-
-        // Saving Data to Firebase Cloud (WITH OFFLINE FALLBACK)
-        window.startAdventure = async function() {
-            const btn = document.getElementById('startBtn');
-            const name = document.getElementById('heroName').value.trim();
-            const grade = document.getElementById('heroGrade').value;
-            const errorMsg = document.getElementById('errorMsg');
-
-            if (name === "" || grade === "") {
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            errorMsg.style.display = 'none';
-            btn.innerHTML = 'Zooming to Cloud... 🚀';
-            btn.style.opacity = '0.9';
-            btn.disabled = true;
-            
-            try {
-                // FAIL-SAFE: Agar Firebase 4 second tak jawab na de, toh bacha Offline khelega!
-                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
-                
-                if (!currentUser) throw new Error('not_logged_in');
-
-                const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-                
-                // Promise.race jo pehle ho jaye (Database ya Timeout)
-                const docSnap = await Promise.race([getDoc(userRef), timeoutPromise]);
-                
-                if (docSnap.exists()) {
-                    await Promise.race([updateDoc(userRef, { heroName: name, grade: grade }), timeoutPromise]);
-                } else {
-                    await Promise.race([setDoc(userRef, { heroName: name, grade: grade, points: 250 }), timeoutPromise]);
-                }
-
-                isOfflineMode = false;
-                setupDashboardView(name, grade);
-                
-                // Live points listener
-                onSnapshot(userRef, (liveData) => {
-                    if (liveData.exists()) {
-                        document.getElementById('dashPoints').innerText = liveData.data().points;
+        // USER PROFILE & ACCESS CONTROL
+        async function loadUserProfile() {
+            onSnapshot(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data'), (snap) => {
+                if(snap.exists()) {
+                    userData = snap.data();
+                    
+                    // ACCESS CONTROL LOGIC
+                    if (userData.role === 'admin') {
+                        // Admin Flow
+                        document.getElementById('navAdminBtn').style.display = 'block';
+                        document.getElementById('navDashBtn').style.display = 'none';
+                        showSection('adminSection');
+                    } else {
+                        // Student Flow
+                        document.getElementById('navAdminBtn').style.display = 'none';
+                        document.getElementById('navDashBtn').style.display = 'block';
+                        if (!userData.heroName) {
+                            showSection('setupSection');
+                        } else {
+                            document.getElementById('userDashName').innerText = t("btn_hello") + userData.heroName;
+                            document.getElementById('userDashClass').innerText = `Class ${userData.class}`;
+                            document.getElementById('userPoints').innerText = userData.points || 0;
+                            showSection('dashboardSection');
+                            renderMissionsUI(); renderLibraryUI();
+                        }
                     }
-                }, (error) => console.error("Error reading points:", error));
-
-            } catch (error) {
-                console.warn("Firebase is slow! Switching to Offline Mode.", error);
-                
-                // OFFLINE MODE JADOO: Bachha kabhi hang screen pe nahi fasega!
-                isOfflineMode = true;
-                offlinePoints = 250;
-                setupDashboardView(name + " (Offline)", grade);
-                document.getElementById('dashPoints').innerText = offlinePoints;
-                
-            } finally {
-                btn.innerHTML = 'Blast Off! 🚀';
-                btn.style.opacity = '1';
-                btn.disabled = false;
-            }
+                } else { 
+                    // Fallback if no doc yet
+                    if(sessionStorage.getItem('pendingRole') !== 'admin') {
+                        showSection('setupSection'); 
+                    }
+                }
+            });
         }
 
+        window.startAdventure = async function() {
+            const name = document.getElementById('heroName').value, cls = document.getElementById('heroClass').value;
+            if(!name || !cls) return alert("Fill details!");
+            await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data'), { heroName: name, class: cls, points: 500, testsUnlocked: false, role: 'student' }, { merge: true });
+        };
 
-        /* ==============================================
-           GAME ENGINE (ALPHABET, MATH TABLES, CRICKET)
-           ============================================== */
-        let currentGame = "";
-        let gameScore = 0;
-        let gameInterval;
-        let targetSpawner;
+        // =========================================
+        // PURE DATABASE FETCHING LOGIC
+        // =========================================
+        let dbBooks = [], dbStore = [], dbMissions = [];
 
-        // Cricket Variables
-        let runs = 0;
-        let ballsPlayed = 0;
-        let wickets = 0;
-        let cricketCommentaries = [
-            "Wah! Kya chhakka mara hai! 🏏💥",
-            "Behtareen shot, seedha boundary ke bahar! 🌟",
-            "2 Run liye, bahut tezi se daude! 🏃‍♂️",
-            "Ouch! Catch out ho gaye. Wicket gir gaya! 😢",
-            "Single mila, strike rotate kiya. 👍",
-            "Shandaar Chauka! 4 Runs! 🔥",
-            "Clean Bowled! Stumps ud gaye! 🎯"
-        ];
+        function loadPublicData() {
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'books'), (snap) => {
+                dbBooks = []; snap.forEach(d => dbBooks.push(d.data())); renderLibraryUI(); renderAdminRepo();
+            });
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'store'), (snap) => {
+                dbStore = []; snap.forEach(d => dbStore.push(d.data())); renderStoreUI();
+            });
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'missions'), (snap) => {
+                dbMissions = []; snap.forEach(d => dbMissions.push(d.data())); renderMissionsUI();
+            });
+        }
+
+        // =========================================
+        // UI RENDERERS
+        // =========================================
+        function renderLibraryUI() {
+            const grid = document.getElementById('booksGrid'); grid.innerHTML = "";
+            let count = 0; let userClass = userData ? (userData.class ? userData.class.toString() : "1") : "1";
+            let hasTestsUnlocked = userData ? userData.testsUnlocked : false;
+
+            dbBooks.forEach(b => {
+                if(b.class.toString() === userClass || b.class === "All") {
+                    count++;
+                    let displayTitle = getLocText(b, 'title');
+                    let btnHTML = b.type === 'test' && !hasTestsUnlocked 
+                        ? `<button class="btn btn-warning" onclick="openModal('paymentModal')">${t('btn_pay')}</button>`
+                        : `<a href="${b.link}" target="_blank" class="btn btn-success" style="display:block;text-align:center;">${t('btn_open')}</a>`;
+                    
+                    grid.innerHTML += `<div class="card"><div class="card-emoji">📄</div><h3 style="direction: ${currentLang==='ur'?'rtl':'ltr'}">${displayTitle}</h3><p>Class ${b.class} | ${b.type}</p>${btnHTML}</div>`;
+                }
+            });
+            document.getElementById('noBooksMsg').style.display = count === 0 ? 'block' : 'none';
+        }
+
+        function renderStoreUI() {
+            const grid = document.getElementById('storeGrid'); grid.innerHTML = "";
+            let count = 0;
+            dbStore.forEach(item => {
+                count++;
+                let displayName = getLocText(item, 'name');
+                grid.innerHTML += `<div class="card"><span class="price-tag">🪙 ${item.price}</span><div class="card-emoji">${item.emoji}</div><h3 style="direction: ${currentLang==='ur'?'rtl':'ltr'}">${displayName}</h3><button class="btn btn-primary" onclick="alert('Redeem request initiated.')">${t('btn_redeem')}</button></div>`;
+            });
+            document.getElementById('noStoreMsg').style.display = count === 0 ? 'block' : 'none';
+        }
+
+        function renderMissionsUI() {
+            const grid = document.getElementById('missionsGrid'); grid.innerHTML = "";
+            let count = 0; let userClass = userData ? (userData.class ? userData.class.toString() : "1") : "1";
+            dbMissions.forEach(m => {
+                if(m.class.toString() === userClass || m.class === "All") {
+                    count++;
+                    let displayTitle = getLocText(m, 'title');
+                    grid.innerHTML += `<div class="card"><div class="card-emoji">🎯</div><h3 style="direction: ${currentLang==='ur'?'rtl':'ltr'}">${displayTitle}</h3><p>Class ${m.class} Game</p><button class="btn btn-primary" onclick="openGame('${m.gameType}')">${t('btn_play')}</button></div>`;
+                }
+            });
+            document.getElementById('noMissionsMsg').style.display = count === 0 ? 'block' : 'none';
+        }
+
+        // =========================================
+        // SUPER ADMIN FUNCTIONS & REPOSITORY
+        // =========================================
+        window.switchAdminTab = (tabId) => {
+            document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.admin-form').forEach(f => f.classList.remove('active'));
+            event.target.classList.add('active'); document.getElementById(tabId).classList.add('active');
+        };
+
+        window.dbAddBook = async () => {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'books'), { 
+                titleEn: document.getElementById('bTitleEn').value, titleHi: document.getElementById('bTitleHi').value, 
+                class: document.getElementById('bClass').value, type: document.getElementById('bType').value, link: document.getElementById('bLink').value 
+            });
+            alert("Book Uploaded Successfully!");
+        };
+        window.dbAddStoreItem = async () => {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'store'), { 
+                nameEn: document.getElementById('sNameEn').value, nameHi: document.getElementById('sNameHi').value, 
+                price: parseInt(document.getElementById('sPrice').value), emoji: document.getElementById('sEmoji').value 
+            });
+            alert("Store Product Added!");
+        };
+        window.dbAddMission = async () => {
+            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'missions'), { 
+                titleEn: document.getElementById('mTitleEn').value, titleHi: document.getElementById('mTitleHi').value, 
+                class: document.getElementById('mClass').value, gameType: document.getElementById('mGameType').value 
+            });
+            alert("Mission Assigned to Class!");
+        };
+
+        function renderAdminRepo() {
+            const list = document.getElementById('adminRepoList'); list.innerHTML = "";
+            dbBooks.sort((a,b) => parseInt(a.class) - parseInt(b.class)).forEach(b => {
+                list.innerHTML += `<div class="repo-item">
+                    <div><strong>${b.titleEn}</strong> <span style="color:gray; font-size:12px;">(${b.link})</span></div>
+                    <div><span style="background:var(--secondary-color); color:white; padding:3px 8px; border-radius:5px; font-size:12px;">Class ${b.class}</span> <span style="background:var(--accent-color); color:white; padding:3px 8px; border-radius:5px; font-size:12px;">${b.type}</span></div>
+                </div>`;
+            });
+            if(dbBooks.length === 0) list.innerHTML = "<p style='color:gray; text-align:center;'>Repository is empty.</p>";
+        }
+
+        // Payment Mock
+        window.processPayment = async (amt, type) => {
+            if(type === 'tests' && userData) {
+                await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data'), { testsUnlocked: true });
+                alert("Premium Content Unlocked!"); closeModal('paymentModal');
+            }
+        };
+
+        // =========================================
+        // GAMIFICATION ENGINE LOGIC
+        // =========================================
+        let gameScore = 0, gameInterval, targetSpawner, runs = 0, ballsPlayed = 0, wickets = 0;
+        let cricketCommentaries = ["What a shot! 🏏💥", "Beautiful boundary! 🌟", "Good running! 🏃‍♂️", "Ouch! Wicket down! 😢", "Single taken. 👍", "Great Four! 🔥", "Clean Bowled! 🎯"];
 
         window.openGame = function(type) {
-            currentGame = type;
-            gameScore = 0;
-            document.getElementById('gameScore').innerText = "0";
-            document.getElementById('gameOverModal').style.display = 'none';
-            document.getElementById('commentaryBox').style.display = 'none';
-            document.getElementById('cricketStatusBar').style.display = 'none';
-            document.getElementById('batBtn').style.display = 'none';
-            
-            // Clear canvas
+            document.querySelectorAll('section').forEach(s => s.style.display = 'none'); document.getElementById('gameArena').style.display = 'block';
+            gameScore = 0; document.getElementById('gameScore').innerText = "0"; 
+            document.getElementById('gameOverModal').style.display = 'none'; document.getElementById('commentaryBox').style.display = 'none'; 
+            document.getElementById('cricketStatusBar').style.display = 'none'; document.getElementById('batBtn').style.display = 'none'; 
             document.querySelectorAll('.game-target').forEach(e => e.remove());
 
-            hideAll();
-            gameArena.style.display = 'block';
-
             if(type === 'alphabet') {
-                document.getElementById('gameTitle').innerText = "Alphabet Shooter 🅰️";
-                document.getElementById('gameInstruction').innerText = "Shoot (Click) the falling Alphabets!";
-                setTimeout(startAlphabetGame, 2000);
-            } 
-            else if (type === 'table') {
-                document.getElementById('gameTitle').innerText = "Table Shooter 🔢";
-                document.getElementById('gameInstruction').innerText = "Shoot the Correct Answer!";
-                setTimeout(startTableGame, 2000);
-            }
-            else if (type === 'cricket') {
-                document.getElementById('gameTitle').innerText = "Gully Cricket 🏏";
-                document.getElementById('gameInstruction').innerText = "Tap HIT SHOT to score runs!";
-                document.getElementById('commentaryBox').style.display = 'block';
-                document.getElementById('commentaryBox').innerText = "Welcome to Gyanichacha Cricket Stadium! 🎙️";
-                document.getElementById('cricketStatusBar').style.display = 'flex';
-                document.getElementById('batBtn').style.display = 'block';
-                
-                runs = 0; ballsPlayed = 0; wickets = 0;
-                updateCricketBoard();
+                document.getElementById('gameTitle').innerText = "Alphabet Shooter 🅰️"; document.getElementById('gameInstruction').innerText = "Shoot the falling Alphabets!"; setTimeout(startAlphabetGame, 2000);
+            } else if (type === 'table') {
+                document.getElementById('gameTitle').innerText = "Table Shooter 🔢"; document.getElementById('gameInstruction').innerText = "Shoot the Correct Answer!"; setTimeout(startTableGame, 2000);
+            } else if (type === 'cricket') {
+                document.getElementById('gameTitle').innerText = "Gully Cricket 🏏"; document.getElementById('gameInstruction').innerText = "Tap HIT SHOT to score runs!"; 
+                document.getElementById('commentaryBox').style.display = 'block'; document.getElementById('cricketStatusBar').style.display = 'flex'; 
+                document.getElementById('batBtn').style.display = 'block'; runs = 0; ballsPlayed = 0; wickets = 0; updateCricketBoard();
             }
         }
 
-        window.quitGame = function() {
-            clearInterval(gameInterval);
-            clearInterval(targetSpawner);
-            hideAll();
-            studentDashboard.style.display = 'block';
-            navbar.style.display = 'flex';
-        }
-
+        window.quitGame = function() { clearInterval(gameInterval); clearInterval(targetSpawner); showSection('dashboardSection'); }
+        
         function spawnTarget(text, isCorrect, onclickLogic) {
-            const canvas = document.getElementById('gameCanvas');
-            const target = document.createElement('div');
-            target.className = 'game-target';
-            target.innerText = text;
-            
-            // Random Size and Position
-            let size = Math.floor(Math.random() * 40) + 60; // 60px to 100px
-            target.style.width = size + 'px';
-            target.style.height = size + 'px';
-            
-            // Start from top, random left
-            target.style.top = '-100px';
-            target.style.left = Math.floor(Math.random() * (canvas.offsetWidth - size)) + 'px';
-            
+            const canvas = document.getElementById('gameCanvas'); const target = document.createElement('div'); target.className = 'game-target'; target.innerText = text;
+            let size = Math.floor(Math.random() * 40) + 60; target.style.width = size + 'px'; target.style.height = size + 'px'; target.style.top = '-100px'; target.style.left = Math.floor(Math.random() * (canvas.offsetWidth - size)) + 'px';
             target.onclick = function() {
-                if(isCorrect) {
-                    gameScore += 10;
-                    document.getElementById('gameScore').innerText = gameScore;
-                    target.style.background = "#00b894";
-                    target.innerText = "💥";
-                } else {
-                    gameScore = Math.max(0, gameScore - 5);
-                    document.getElementById('gameScore').innerText = gameScore;
-                    target.style.background = "#d63031";
-                    target.innerText = "❌";
-                }
-                setTimeout(() => target.remove(), 200);
-                if(onclickLogic) onclickLogic(isCorrect);
+                if(isCorrect) { gameScore += 10; target.style.background = "#00b894"; target.innerText = "💥"; } 
+                else { gameScore = Math.max(0, gameScore - 5); target.style.background = "#d63031"; target.innerText = "❌"; }
+                document.getElementById('gameScore').innerText = gameScore; setTimeout(() => target.remove(), 200); if(onclickLogic) onclickLogic(isCorrect);
             };
-
             canvas.appendChild(target);
-
-            // Animate falling
-            let pos = -100;
-            let speed = Math.random() * 2 + 2;
-            let fallInt = setInterval(() => {
-                pos += speed;
-                target.style.top = pos + 'px';
-                if(pos > canvas.offsetHeight) {
-                    clearInterval(fallInt);
-                    target.remove();
-                }
-            }, 20);
+            let pos = -100; let speed = Math.random() * 2 + 2; let fallInt = setInterval(() => { pos += speed; target.style.top = pos + 'px'; if(pos > canvas.offsetHeight) { clearInterval(fallInt); target.remove(); } }, 20);
         }
 
-        // --- 1. ALPHABET GAME LOGIC ---
         function startAlphabetGame() {
-            document.getElementById('gameInstruction').style.display = 'none';
-            let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            let timeLeft = 30; // 30 seconds game
-            
-            targetSpawner = setInterval(() => {
-                let randomLetter = alphabets[Math.floor(Math.random() * alphabets.length)];
-                spawnTarget(randomLetter, true, null); // all are correct to shoot
-            }, 800);
-
-            gameInterval = setInterval(() => {
-                timeLeft--;
-                document.getElementById('gameInstruction').style.display = 'block';
-                document.getElementById('gameInstruction').innerText = "Time Left: " + timeLeft + "s";
-                if(timeLeft <= 0) endGame();
-            }, 1000);
+            document.getElementById('gameInstruction').style.display = 'none'; let alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; let timeLeft = 30;
+            targetSpawner = setInterval(() => spawnTarget(alphabets[Math.floor(Math.random() * 26)], true, null), 800);
+            gameInterval = setInterval(() => { timeLeft--; document.getElementById('gameInstruction').style.display = 'block'; document.getElementById('gameInstruction').innerText = "Time: " + timeLeft + "s"; if(timeLeft <= 0) endGame(); }, 1000);
         }
 
-        // --- 2. TABLE SHOOTER LOGIC (Tables 2 to 10) ---
         function startTableGame() {
-            let rounds = 5;
-            let currentRound = 0;
-            
+            let rounds = 5; let currentRound = 0;
             function nextQuestion() {
-                if(currentRound >= rounds) return endGame();
-                
-                document.querySelectorAll('.game-target').forEach(e => e.remove());
-                let num1 = Math.floor(Math.random() * 9) + 2; // 2 to 10
-                let num2 = Math.floor(Math.random() * 10) + 1; // 1 to 10
-                let correctAns = num1 * num2;
-                
-                document.getElementById('gameInstruction').innerText = `Shoot the answer: ${num1} x ${num2} = ?`;
-                
-                // Spawn 1 correct and 2 wrong answers
-                let answers = [correctAns, correctAns + Math.floor(Math.random()*5)+1, correctAns - Math.floor(Math.random()*4)-1];
-                // Shuffle array
-                answers.sort(() => Math.random() - 0.5);
-
-                answers.forEach((ans) => {
-                    setTimeout(() => {
-                        spawnTarget(ans, ans === correctAns, (isCorrect) => {
-                            if(isCorrect) {
-                                currentRound++;
-                                setTimeout(nextQuestion, 500);
-                            }
-                        });
-                    }, Math.random() * 1000);
-                });
-            }
-            nextQuestion();
+                if(currentRound >= rounds) return endGame(); document.querySelectorAll('.game-target').forEach(e => e.remove());
+                let n1 = Math.floor(Math.random() * 9) + 2; let n2 = Math.floor(Math.random() * 10) + 1; let correctAns = n1 * n2;
+                document.getElementById('gameInstruction').innerText = `Shoot: ${n1} x ${n2} = ?`;
+                let ans = [correctAns, correctAns+Math.floor(Math.random()*5)+1, correctAns-Math.floor(Math.random()*4)-1].sort(() => Math.random() - 0.5);
+                ans.forEach((a) => { setTimeout(() => spawnTarget(a, a === correctAns, (isC) => { if(isC) { currentRound++; setTimeout(nextQuestion, 500); } }), Math.random() * 1000); });
+            } nextQuestion();
         }
 
-        // --- 3. GULLY CRICKET LOGIC ---
-        function updateCricketBoard() {
-            document.getElementById('cricRuns').innerText = runs;
-            document.getElementById('cricWickets').innerText = wickets;
-            let overs = Math.floor(ballsPlayed / 6);
-            let remBalls = ballsPlayed % 6;
-            document.getElementById('cricOvers').innerText = overs + "." + remBalls;
-            document.getElementById('gameScore').innerText = runs * 10; // 10 XP per run
-        }
-
+        function updateCricketBoard() { document.getElementById('cricRuns').innerText = runs; document.getElementById('cricWickets').innerText = wickets; document.getElementById('cricOvers').innerText = Math.floor(ballsPlayed / 6) + "." + (ballsPlayed % 6); document.getElementById('gameScore').innerText = runs * 10; }
+        
         window.hitCricketBall = function() {
-            if(ballsPlayed >= 12 || wickets >= 3) return; // 2 Overs match
-
-            let outcomes = [0, 1, 2, 4, 6, 'W'];
-            let result = outcomes[Math.floor(Math.random() * outcomes.length)];
-            let commBox = document.getElementById('commentaryBox');
-            
-            ballsPlayed++;
-
-            if(result === 'W') {
-                wickets++;
-                commBox.innerText = cricketCommentaries[3] + " ya " + cricketCommentaries[6];
-                commBox.style.borderColor = "#d63031";
-            } else {
-                runs += result;
-                if(result === 6) commBox.innerText = cricketCommentaries[0];
-                else if(result === 4) commBox.innerText = cricketCommentaries[5];
-                else if(result === 2) commBox.innerText = cricketCommentaries[2];
-                else if(result === 1) commBox.innerText = cricketCommentaries[4];
-                else commBox.innerText = "Dot ball! Koi run nahi. 🏏";
-                
-                commBox.style.borderColor = "#00b894";
-            }
-
-            updateCricketBoard();
-
-            if(ballsPlayed >= 12 || wickets >= 3) {
-                setTimeout(() => {
-                    commBox.innerText = "Innings Over! Well played Hero! 🏆";
-                    gameScore = runs * 10;
-                    endGame();
-                }, 1500);
-            }
+            if(ballsPlayed >= 12 || wickets >= 3) return; let result = [0, 1, 2, 4, 6, 'W'][Math.floor(Math.random() * 6)]; let commBox = document.getElementById('commentaryBox'); ballsPlayed++;
+            if(result === 'W') { wickets++; commBox.innerText = cricketCommentaries[3]; commBox.style.borderColor = "#d63031"; } else { runs += result; commBox.innerText = result===6?cricketCommentaries[0]:result===4?cricketCommentaries[5]:result===2?cricketCommentaries[2]:result===1?cricketCommentaries[4]:"Dot ball! 🏏"; commBox.style.borderColor = "#00b894"; }
+            updateCricketBoard(); if(ballsPlayed >= 12 || wickets >= 3) { setTimeout(() => { commBox.innerText = "Innings Over! 🏆"; gameScore = runs * 10; endGame(); }, 1500); }
         }
 
-        function endGame() {
-            clearInterval(gameInterval);
-            clearInterval(targetSpawner);
-            document.getElementById('batBtn').style.display = 'none';
-            document.getElementById('finalScore').innerText = gameScore;
-            document.getElementById('gameOverModal').style.display = 'flex';
+        function endGame() { clearInterval(gameInterval); clearInterval(targetSpawner); document.getElementById('batBtn').style.display = 'none'; document.getElementById('finalScore').innerText = gameScore; document.getElementById('gameOverModal').style.display = 'flex'; }
+        
+        window.claimPointsAndQuit = async function() { 
+            if (gameScore > 0 && user && userData.role !== 'admin') { 
+                await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'profile', 'data'), { points: userData.points + gameScore }); 
+            } 
+            quitGame(); 
         }
 
-        // Claim Points (Offline ya Online)
-        window.claimPointsAndQuit = async function() {
-            if (gameScore > 0) {
-                if (isOfflineMode) {
-                    offlinePoints += gameScore;
-                    document.getElementById('dashPoints').innerText = offlinePoints;
-                } else if (currentUser) {
-                    const userRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'data');
-                    try {
-                        const docSnap = await getDoc(userRef);
-                        if (docSnap.exists()) {
-                            const currentPoints = docSnap.data().points;
-                            await updateDoc(userRef, { points: currentPoints + gameScore });
-                        }
-                    } catch (error) {
-                        console.error("Error adding game points:", error);
-                    }
-                }
-            }
-            quitGame();
-        }
-
+        // Initialize default translation
+        setLanguage('en');
     </script>
 </body>
 </html>
